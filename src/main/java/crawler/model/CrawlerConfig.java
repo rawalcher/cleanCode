@@ -1,17 +1,16 @@
 package crawler.model;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
 public class CrawlerConfig {
-    private final URL rootUrl;
+    private final URI rootUrl;
     private final int maxDepth;
     private final List<String> allowedDomains;
 
-    public CrawlerConfig(String url, int maxDepth, String[] domains) throws MalformedURLException {
-        this.rootUrl = new URL(url);
+    public CrawlerConfig(URI url, int maxDepth, String... domains) {
+        this.rootUrl = url;
         if (maxDepth < 0) {
             throw new IllegalArgumentException("Depth must be non-negative.");
         }
@@ -19,7 +18,7 @@ public class CrawlerConfig {
         this.allowedDomains = List.of(domains);
     }
 
-    public URL getRootUrl() {
+    public URI getRootUrl() {
         return rootUrl;
     }
 

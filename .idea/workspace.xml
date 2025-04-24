@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #1: simplified PageResult to just be a Record Class, changed Package Structure again">
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at">
       <change afterPath="$PROJECT_DIR$/src/test/java/crawler/reporter/MarkdownReporterTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/resources/expected-report.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/model/CrawlerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/model/CrawlerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/model/PageResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/model/PageResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,6 +72,7 @@
     "JUnit.All in cleanCode (1).executor": "Debug",
     "JUnit.All in cleanCode.executor": "Run",
     "JUnit.MarkdownReporterTest.executor": "Run",
+    "JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks.executor": "Run",
     "JUnit.MarkdownReporterTest.testWriteSimpleReport.executor": "Run",
     "Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -100,6 +102,8 @@
       <recent name="main.java.crawler" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Raphael\IdeaProjects\cleanCode\src\test\java\resources" />
+      <recent name="C:\Users\Raphael\IdeaProjects\cleanCode\src\test\java\crawler\reporter" />
       <recent name="C:\Users\Raphael\IdeaProjects\cleanCode" />
       <recent name="C:\Users\Raphael\IdeaProjects\cleanCode\.idea" />
     </key>
@@ -110,20 +114,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MarkdownReporterTest">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="main.java.crawler.Main" />
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="main.java.crawler.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus">
     <configuration name="All in cleanCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <option name="PACKAGE_NAME" value="" />
@@ -146,6 +137,38 @@
       <option name="MAIN_CLASS_NAME" value="crawler.reporter.MarkdownReporterTest" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cleanCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="crawler.reporter.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="crawler.reporter" />
+      <option name="MAIN_CLASS_NAME" value="crawler.reporter.MarkdownReporterTest" />
+      <option name="METHOD_NAME" value="testWritePage_EmptyHeadingsAndLinks" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MarkdownReporterTest.testWritePage_IncludesBrokenStatus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cleanCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="crawler.reporter.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="crawler.reporter" />
+      <option name="MAIN_CLASS_NAME" value="crawler.reporter.MarkdownReporterTest" />
+      <option name="METHOD_NAME" value="testWritePage_IncludesBrokenStatus" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -178,18 +201,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.crawler.Main" />
-      <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks" />
+      <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus" />
       <item itemvalue="JUnit.MarkdownReporterTest.testWriteSimpleReport" />
       <item itemvalue="JUnit.All in cleanCode" />
       <item itemvalue="JUnit.MarkdownReporterTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus" />
+        <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks" />
         <item itemvalue="JUnit.MarkdownReporterTest" />
         <item itemvalue="Application.crawler.Main" />
         <item itemvalue="JUnit.MarkdownReporterTest.testWriteSimpleReport" />
-        <item itemvalue="JUnit.All in cleanCode" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -212,7 +236,7 @@
       <workItem from="1743495262696" duration="267000" />
       <workItem from="1745484850433" duration="4946000" />
       <workItem from="1745490925025" duration="2085000" />
-      <workItem from="1745493020716" duration="845000" />
+      <workItem from="1745493020716" duration="3699000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -262,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745491089059</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at">
+      <option name="closed" value="true" />
+      <created>1745494394847</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1745494394847</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,6 +318,7 @@
     <MESSAGE value="Coding Together Session #1: Fixed Folder Structure" />
     <MESSAGE value="Coding Together Session #1: added Heading and PageResult to represent a fetched Page" />
     <MESSAGE value="Coding Together Session #1: simplified PageResult to just be a Record Class, changed Package Structure again" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #1: simplified PageResult to just be a Record Class, changed Package Structure again" />
+    <MESSAGE value="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at" />
   </component>
 </project>

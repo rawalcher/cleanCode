@@ -4,6 +4,8 @@ import crawler.app.WebCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
@@ -14,7 +16,7 @@ public class Main {
         }
 
         try {
-            String url = args[0];
+            URI url = URI.create(args[0]);
             int depth = Integer.parseInt(args[1]);
             String[] domains = args[2].split(",");
 

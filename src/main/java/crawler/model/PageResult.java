@@ -17,14 +17,14 @@ import java.util.Set;
  * @param children The set of child PageResults representing successfully crawled linked pages.
  */
 public record PageResult(
-        String url,
+        URI url,
         int depth,
         boolean broken,
         List<Heading> headings,
         List<URI> links,
         Set<PageResult> children
 ) {
-    public static PageResult brokenLink(String url, int depth) {
+    public static PageResult brokenLink(URI url, int depth) {
         return new PageResult(url, depth, true, List.of(), List.of(), Set.of());
     }
 }
