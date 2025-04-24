@@ -13,7 +13,7 @@ e.g. `crawler www.sample.com 5`
 
 The crawler MUST implement at least the following features:
 
-- [ ] Input the URL, the depth of websites to crawl, and the domain(s) of websites to be crawled
+- [X] Input the URL, the depth of websites to crawl, and the domain(s) of websites to be crawled
 - [ ] Create a compact overview of the crawled websites:
     - [ ] Record only the headings
     - [ ] Represent the depth of the crawled websites with proper indentation (see example)
