@@ -1,5 +1,6 @@
 package crawler;
 
+import crawler.app.WebCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         if (args.length < 3) {
-            logger.error("Usage: java -jar crawler.jar <URL> <depth> <domains (comma-separated)>");
+            logger.error("Usage: <URL> <depth> <domains (comma-separated)>");
             System.exit(1);
         }
 
@@ -17,11 +18,14 @@ public class Main {
             int depth = Integer.parseInt(args[1]);
             String[] domains = args[2].split(",");
 
-            logger.info("Starting crawl: URL={}, depth={}, domains={}", url, depth, String.join(",", domains));
+            // SonarCube compliant non conditional calling
+            String domainLog = (domains.length > 0) ? String.join(",", domains) : "none";
+
+            logger.info("Starting crawl: URL= {}, depth= {}, domains= {}", url, depth, domainLog);
 
             crawler.model.CrawlerConfig config = new crawler.model.CrawlerConfig(url, depth, domains);
-            //WebCrawler crawler = new WebCrawler();
-            //crawler.crawl(config);
+            WebCrawler crawler = new WebCrawler();
+            crawler.crawl(config);
 
             logger.info("Crawling completed.");
         } catch (Exception e) {
