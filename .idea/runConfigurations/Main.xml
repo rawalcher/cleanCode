@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="crawler.Main" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="crawler.Main" />
     <module name="cleanCode" />
     <option name="PROGRAM_PARAMETERS" value="https://www.aau.at 2 aau.at" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="crawler.*" />
+        <option name="PATTERN" value="crawler.model.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
