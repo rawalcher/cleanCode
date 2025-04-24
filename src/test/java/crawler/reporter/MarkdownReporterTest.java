@@ -1,7 +1,6 @@
 package crawler.reporter;
 
 import crawler.model.CrawlerConfig;
-import crawler.model.Heading;
 import crawler.model.PageResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,8 +78,8 @@ class MarkdownReporterTest {
     @Test
     void testWritePage_IncludesHeadings() {
         StringWriter sw = new StringWriter();
-        Heading h1 = new Heading(1, "Main Heading");
-        Heading h2 = new Heading(2, "Sub Heading");
+        PageResult.Heading h1 = new PageResult.Heading(1, "Main Heading");
+        PageResult.Heading h2 = new PageResult.Heading(2, "Sub Heading");
         PageResult pageWithHeadings = new PageResult(URI.create("http://example.com"), 0, false,
                 Arrays.asList(h1, h2), Collections.emptyList(), Collections.emptySet());
 
@@ -110,12 +109,12 @@ class MarkdownReporterTest {
     void testWritePage_RecursiveChildrenPages() {
         StringWriter sw = new StringWriter();
         PageResult childPage = new PageResult(URI.create("http://example.com/child"), 1, false,
-                Collections.singletonList(new Heading(1, "Child Heading")),
+                Collections.singletonList(new PageResult.Heading(1, "Child Heading")),
                 Collections.singletonList(URI.create("http://example.com/link")),
                 Collections.emptySet());
 
         PageResult root = new PageResult(URI.create("http://example.com"), 0, false,
-                Collections.singletonList(new Heading(1, "Root Heading")),
+                Collections.singletonList(new PageResult.Heading(1, "Root Heading")),
                 Collections.singletonList(URI.create("http://example.com/rootlink")),
                 Set.of(childPage));
 

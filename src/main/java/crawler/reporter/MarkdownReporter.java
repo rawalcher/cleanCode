@@ -1,7 +1,6 @@
 package crawler.reporter;
 
 import crawler.model.CrawlerConfig;
-import crawler.model.Heading;
 import crawler.model.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,9 +49,9 @@ public class MarkdownReporter {
         if (page.headings().isEmpty()) {
             writer.println("- (none)");
         } else {
-            for (Heading h : page.headings()) {
-                String indent = "  ".repeat(h.getLevel() - 1);
-                writer.printf("%s- H%d: %s%n", indent, h.getLevel(), h.getText());
+            for (PageResult.Heading h : page.headings()) {
+                String indent = "  ".repeat(h.level() - 1);
+                writer.printf("%s- H%d: %s%n", indent, h.level(), h.text());
             }
         }
 

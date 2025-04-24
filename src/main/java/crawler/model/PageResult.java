@@ -24,6 +24,8 @@ public record PageResult(
         List<URI> links,
         Set<PageResult> children
 ) {
+    public record Heading(int level, String text) {}
+
     public static PageResult brokenLink(URI url, int depth) {
         return new PageResult(url, depth, true, List.of(), List.of(), Set.of());
     }
