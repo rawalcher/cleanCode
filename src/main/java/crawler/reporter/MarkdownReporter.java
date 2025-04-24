@@ -1,4 +1,4 @@
-package main.java.crawler.reporter;
+package crawler.reporter;
 
 /**
  * turns the PageResult into the final report.

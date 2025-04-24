@@ -1,4 +1,4 @@
-package main.java.crawler.app;
+package crawler.app;
 
 /**
  * Calls all the necessary other methods / classes

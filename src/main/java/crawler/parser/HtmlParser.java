@@ -1,4 +1,4 @@
-package main.java.crawler.parser;
+package crawler.parser;
 
 /**
  * Parses PageFetcher output into PageResult

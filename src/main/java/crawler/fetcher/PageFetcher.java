@@ -1,4 +1,4 @@
-package main.java.crawler.fetcher;
+package crawler.fetcher;
 
 /**
  * fetches HTML with jsoup, handles connections, timeouts etc.

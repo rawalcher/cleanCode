@@ -1,4 +1,4 @@
-package main.java.crawler.model;
+package crawler.model;
 
 import java.util.List;
 import java.util.Map;
