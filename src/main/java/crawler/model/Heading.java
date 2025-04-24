@@ -1,4 +1,4 @@
-package main.java.crawler.model;
+package crawler.model;
 
 public class Heading {
     private final int level; // 1 = h1, 2 = h2, ...

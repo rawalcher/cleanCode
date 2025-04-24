@@ -1,4 +1,4 @@
-package crawler.parser;
+package parser;
 
 /**
  * Parses PageFetcher output into PageResult
