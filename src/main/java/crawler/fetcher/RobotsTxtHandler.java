@@ -19,8 +19,8 @@ public class RobotsTxtHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotsTxtHandler.class);
 
-    private final Set<URI> disallowedPaths = new HashSet<>();
-    private final Set<URI> allowedPaths = new HashSet<>();
+    protected final Set<URI> disallowedPaths = new HashSet<>();
+    protected final Set<URI> allowedPaths = new HashSet<>();
     private final String userAgent;
 
     public RobotsTxtHandler(String userAgent, URI baseUri) {
@@ -94,7 +94,7 @@ public class RobotsTxtHandler {
         }
     }
 
-    private URI normalizePath(String path) {
+    URI normalizePath(String path) {
         try {
             URI rawUri = new URI(path);
             URI normalized = rawUri.normalize();
