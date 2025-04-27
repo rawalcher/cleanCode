@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #1: CrawlerConfig simplified, Heading turned into Record and merged into PageResult">
-      <change afterPath="$PROJECT_DIR$/src/test/java/crawler/model/CrawlerConfigTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/crawler/model/PageResultTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/crawler_Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #2: added HtmlParser, PageFetcher to fetch and parse Links. added JSOUP to dependencies">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -62,42 +63,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.crawler.Main.executor": "Run",
-    "JUnit.All in cleanCode (1).executor": "Debug",
-    "JUnit.All in cleanCode.executor": "Run",
-    "JUnit.CrawlerConfigTest.executor": "Run",
-    "JUnit.MarkdownReporterTest.executor": "Run",
-    "JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks.executor": "Run",
-    "JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus.executor": "Run",
-    "JUnit.MarkdownReporterTest.testWriteSimpleReport.executor": "Run",
-    "JUnit.PageResultTest.executor": "Run",
-    "Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/Raphael/IdeaProjects/cleanCode/src/test",
-    "last_opened_file_path": "/home/rawalcher/Documents/cleanCode",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.crawler.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in cleanCode (1).executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.All in cleanCode.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CrawlerConfigTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.testWriteSimpleReport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PageResultTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in cleanCode.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/Raphael/IdeaProjects/cleanCode/src/test&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/rawalcher/Documents/cleanCode&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="main.java.crawler" />
@@ -121,77 +123,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.java in cleanCode">
-    <configuration name="CrawlerConfigTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.model" />
-      <option name="MAIN_CLASS_NAME" value="crawler.model.CrawlerConfigTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.reporter.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.reporter" />
-      <option name="MAIN_CLASS_NAME" value="crawler.reporter.MarkdownReporterTest" />
-      <option name="METHOD_NAME" value="testWritePage_EmptyHeadingsAndLinks" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MarkdownReporterTest.testWritePage_IncludesBrokenStatus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.reporter.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.reporter" />
-      <option name="MAIN_CLASS_NAME" value="crawler.reporter.MarkdownReporterTest" />
-      <option name="METHOD_NAME" value="testWritePage_IncludesBrokenStatus" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PageResultTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.model" />
-      <option name="MAIN_CLASS_NAME" value="crawler.model.PageResultTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="java in cleanCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/src/test/java" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration default="true" type="lua.app" factoryName="Lua Application">
       <option name="program" value="/usr/bin/lua" />
       <option name="file" value="" />
@@ -202,23 +134,6 @@
       <option name="showConsole" value="true" />
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Application.crawler.Main" />
-      <item itemvalue="JUnit.CrawlerConfigTest" />
-      <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks" />
-      <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus" />
-      <item itemvalue="JUnit.PageResultTest" />
-      <item itemvalue="JUnit.java in cleanCode" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.java in cleanCode" />
-        <item itemvalue="JUnit.PageResultTest" />
-        <item itemvalue="JUnit.CrawlerConfigTest" />
-        <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus" />
-        <item itemvalue="JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -239,7 +154,8 @@
       <workItem from="1743495262696" duration="267000" />
       <workItem from="1745484850433" duration="4946000" />
       <workItem from="1745490925025" duration="2085000" />
-      <workItem from="1745493020716" duration="5228000" />
+      <workItem from="1745493020716" duration="5665000" />
+      <workItem from="1745762921209" duration="4772000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -313,7 +229,47 @@
       <option name="project" value="LOCAL" />
       <updated>1745498211095</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Coding Together Session #1: added Tests for CrawlerConfig and PageResult">
+      <option name="closed" value="true" />
+      <created>1745498458294</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1745498458294</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Coding Together Session #1: updated README.md">
+      <option name="closed" value="true" />
+      <created>1745498618583</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1745498618583</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Coding Together Session #2: rework of main to make it cleaner">
+      <option name="closed" value="true" />
+      <created>1745765337315</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1745765337315</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Coding Together Session #2: added LinkFilter, RobotsTxtCache and RobotsTxtHandler to check if we are allowed to crawl URLs/Domains">
+      <option name="closed" value="true" />
+      <created>1745766497356</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1745766497356</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Coding Together Session #2: added HtmlParser, PageFetcher to fetch and parse Links. added JSOUP to dependencies">
+      <option name="closed" value="true" />
+      <created>1745766574862</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1745766574862</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -339,8 +295,14 @@
     <MESSAGE value="Coding Together Session #1: simplified PageResult to just be a Record Class, changed Package Structure again" />
     <MESSAGE value="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests" />
-    <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests = SonarLints" />
+    <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig simplified, Heading turned into Record and merged into PageResult" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #1: CrawlerConfig simplified, Heading turned into Record and merged into PageResult" />
+    <MESSAGE value="Coding Together Session #1: added Tests for CrawlerConfig and PageResult" />
+    <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
+    <MESSAGE value="Coding Together Session #1: updated README.md" />
+    <MESSAGE value="Coding Together Session #2: rework of main to make it cleaner" />
+    <MESSAGE value="Coding Together Session #2: added LinkFilter, RobotsTxtCache and RobotsTxtHandler to check if we are allowed to crawl URLs/Domains" />
+    <MESSAGE value="Coding Together Session #2: added HtmlParser, PageFetcher to fetch and parse Links. added JSOUP to dependencies" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #2: added HtmlParser, PageFetcher to fetch and parse Links. added JSOUP to dependencies" />
   </component>
 </project>

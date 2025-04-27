@@ -38,15 +38,19 @@ public class RobotsTxtHandler {
 
     private BufferedReader downloadRobotsTxt(URI baseUri) throws IOException {
         try {
-            URL robotsUrl = new URI(baseUri.getScheme(), baseUri.getHost(), "/robots.txt", null).toURL();
-
+            URI robotsUri = new URI(
+                    baseUri.getScheme(),
+                    baseUri.getHost(),
+                    "/robots.txt",
+                    null
+            );
+            URL robotsUrl = robotsUri.toURL();
             logger.info("Fetching robots.txt from {}", robotsUrl);
             return new BufferedReader(new InputStreamReader(robotsUrl.openStream()));
         } catch (Exception e) {
             throw new IOException("Failed to construct robots.txt URL for " + baseUri, e);
         }
     }
-
 
     private void parseRobotsTxt(BufferedReader reader) throws IOException {
         boolean appliesToUs = false;
