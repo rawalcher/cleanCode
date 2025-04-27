@@ -40,7 +40,7 @@ public class HtmlParser {
             Elements elements = document.select("h" + level);
             for (Element element : elements) {
                 String text = element.text();
-                if (text != null && !text.isBlank()) {
+                if (!text.isBlank()) {
                     headings.add(new PageResult.Heading(level, text.trim()));
                 }
             }
@@ -55,7 +55,7 @@ public class HtmlParser {
         Elements elements = document.select("a[href]");
         for (Element element : elements) {
             String href = element.attr("href");
-            if (href != null && !href.isBlank()) {
+            if (!href.isBlank()) {
                 try {
                     links.add(baseUrl.resolve(href.trim()));
                 } catch (IllegalArgumentException e) {

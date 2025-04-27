@@ -2,7 +2,7 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="crawler.Main" />
     <module name="cleanCode" />
-    <option name="PROGRAM_PARAMETERS" value="https://www.aau.at 5 www.aau.at" />
+    <option name="PROGRAM_PARAMETERS" value="https://www.aau.at 1 www.aau.at" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="crawler.model.*" />

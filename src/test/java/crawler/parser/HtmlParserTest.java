@@ -72,7 +72,7 @@ class HtmlParserTest {
         List<PageResult.Heading> headings = result.headings();
 
         assertEquals(1, headings.size());
-        assertEquals("Valid Heading", headings.get(0).text());
+        assertEquals("Valid Heading", headings.getFirst().text());
     }
 
     @Test
@@ -84,7 +84,7 @@ class HtmlParserTest {
         List<PageResult.Heading> headings = result.headings();
 
         assertEquals(1, headings.size());
-        assertEquals("Valid Heading", headings.get(0).text());
+        assertEquals("Valid Heading", headings.getFirst().text());
     }
 
     private Document createDocumentWithHeadingsAndLinks() {
