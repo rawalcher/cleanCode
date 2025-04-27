@@ -18,14 +18,12 @@ public class Main {
         try {
             URI url = URI.create(args[0]);
             int depth = Integer.parseInt(args[1]);
-            String[] domains = args[2].split(",");
 
-            // SonarCube compliant non conditional calling
-            String domainLog = (domains.length > 0) ? String.join(",", domains) : "none";
-
+            // way cleaner :)
+            String domainLog = args[2].isEmpty() ? "none" : args[2];
             logger.info("Starting crawl: URL= {}, depth= {}, domains= {}", url, depth, domainLog);
 
-            crawler.model.CrawlerConfig config = new crawler.model.CrawlerConfig(url, depth, domains);
+            crawler.model.CrawlerConfig config = new crawler.model.CrawlerConfig(url, depth, args[2].split(","));
             WebCrawler crawler = new WebCrawler();
             crawler.crawl(config);
 
@@ -35,5 +33,6 @@ public class Main {
             System.exit(2);
         }
     }
+
 }
 
