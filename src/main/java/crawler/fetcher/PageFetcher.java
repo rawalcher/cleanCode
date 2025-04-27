@@ -12,7 +12,7 @@ import java.net.URI;
  */
 public class PageFetcher {
 
-    private static final int TIMEOUT_MILLIS = 10000;
+    private static final int TIMEOUT_MILLIS = 2000;
 
     /**
      * Fetches a page and returns its Jsoup Document.
