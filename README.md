@@ -14,15 +14,15 @@ e.g. `crawler www.sample.com 5`
 The crawler MUST implement at least the following features:
 
 - [X] Input the URL, the depth of websites to crawl, and the domain(s) of websites to be crawled
-- [ ] Create a compact overview of the crawled websites:
-    - [ ] Record only the headings
-    - [ ] Represent the depth of the crawled websites with proper indentation (see example)
-    - [ ] Record the URLs of the crawled sites
-    - [ ] Highlight broken links
-- [ ] Find the links to other websites and recursively do the analysis for those websites:
-    - [ ] That can be reached within the given depth (to avoid very long runtimes)
-    - [ ] And is located in one of the specified domain(s)
-    - [ ] Also note, each website should be crawled only once
+- [X] Create a compact overview of the crawled websites:
+    - [X] Record only the headings
+    - [X] Represent the depth of the crawled websites with proper indentation (see example)
+    - [X] Record the URLs of the crawled sites
+    - [X] Highlight broken links
+- [X] Find the links to other websites and recursively do the analysis for those websites:
+    - [X] That can be reached within the given depth (to avoid very long runtimes)
+    - [X] And is located in one of the specified domain(s)
+    - [X] Also note, each website should be crawled only once
 
 ## Additional Info
 

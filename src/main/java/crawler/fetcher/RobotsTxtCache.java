@@ -24,6 +24,7 @@ public class RobotsTxtCache {
      */
     public RobotsTxtHandler getHandler(URI uri) {
         String domain = uri.getHost();
+        // #FIXME optimise
         if (!robotsCache.containsKey(domain)) {
             robotsCache.put(domain, new RobotsTxtHandler(userAgent, uri));
         }

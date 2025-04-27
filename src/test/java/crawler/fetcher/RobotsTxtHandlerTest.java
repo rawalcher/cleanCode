@@ -14,12 +14,12 @@ class RobotsTxtHandlerTest {
         }
 
         // Allow test to directly modify paths
-        void addAllow(String path) {
-            allowedPaths.add(URI.create(path));
+        void addAllow() {
+            allowedPaths.add(URI.create("/private/public"));
         }
 
-        void addDisallow(String path) {
-            disallowedPaths.add(URI.create(path));
+        void addDisallow() {
+            disallowedPaths.add(URI.create("/private"));
         }
     }
 
@@ -35,7 +35,7 @@ class RobotsTxtHandlerTest {
     @Test
     void testIsDisallowed() throws Exception {
         TestRobotsTxtHandler handler = new TestRobotsTxtHandler();
-        handler.addDisallow("/private");
+        handler.addDisallow();
 
         URI allowed = new URI("https://example.com/public/page");
         URI disallowed = new URI("https://example.com/private/page");
@@ -47,8 +47,8 @@ class RobotsTxtHandlerTest {
     @Test
     void testIsAllowedOverridesDisallow() throws Exception {
         TestRobotsTxtHandler handler = new TestRobotsTxtHandler();
-        handler.addDisallow("/private");
-        handler.addAllow("/private/public");
+        handler.addDisallow();
+        handler.addAllow();
 
         URI allowed = new URI("https://example.com/private/public/page");
         URI disallowed = new URI("https://example.com/private/secret");
