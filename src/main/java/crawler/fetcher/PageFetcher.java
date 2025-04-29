@@ -25,6 +25,9 @@ public class PageFetcher {
             return Jsoup.connect(url.toString())
                     .timeout(CrawlerConstants.CONNECTION_TIMEOUT_MS)
                     .userAgent("SimpleWebCrawlerBot/1.0")
+                    .ignoreHttpErrors(true)
+                    .ignoreContentType(true)
+                    .followRedirects(true)
                     .get();
         } catch (HttpStatusException e) {
             throw new FetchException("HTTP error fetching URL: " + url + ", Status: " + e.getStatusCode(), e);

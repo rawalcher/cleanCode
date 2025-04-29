@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Rework of WebCrawler">
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +90,8 @@
     "JUnit.PageResultTest.testPageResultWithNestedChildren.executor": "Run",
     "JUnit.RobotsTxtCacheTest.executor": "Run",
     "JUnit.RobotsTxtHandlerTest.executor": "Run",
+    "JUnit.RobotsTxtHandlerTest.testPathAllowance.executor": "Run",
+    "JUnit.RobotsTxtHandlerTest.testPathNormalization.executor": "Run",
     "JUnit.WebCrawlerTest.executor": "Run",
     "JUnit.WebCrawlerTest.testCrawlWithValidConfig.executor": "Run",
     "JUnit.java in cleanCode.executor": "Run",
@@ -140,7 +143,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CrawlerConfigTest">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="CrawlerConfigTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
@@ -156,76 +159,83 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PageResultTest.testPageResultWithNestedChildren" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="LinkFilterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="crawler.model.*" />
+          <option name="PATTERN" value="crawler.util.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="crawler.model" />
-      <option name="MAIN_CLASS_NAME" value="crawler.model.PageResultTest" />
-      <option name="METHOD_NAME" value="testPageResultWithNestedChildren" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="WebCrawlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.app.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.app" />
-      <option name="MAIN_CLASS_NAME" value="crawler.app.WebCrawlerTest" />
+      <option name="PACKAGE_NAME" value="crawler.util" />
+      <option name="MAIN_CLASS_NAME" value="crawler.util.LinkFilterTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WebCrawlerTest.testCrawlWithValidConfig" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RobotsTxtHandlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="crawler.app.*" />
+          <option name="PATTERN" value="crawler.fetcher.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="crawler.app" />
-      <option name="MAIN_CLASS_NAME" value="crawler.app.WebCrawlerTest" />
-      <option name="METHOD_NAME" value="testCrawlWithValidConfig" />
+      <option name="PACKAGE_NAME" value="crawler.fetcher" />
+      <option name="MAIN_CLASS_NAME" value="crawler.fetcher.RobotsTxtHandlerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RobotsTxtHandlerTest.testPathAllowance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cleanCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="crawler.fetcher.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="crawler.fetcher" />
+      <option name="MAIN_CLASS_NAME" value="crawler.fetcher.RobotsTxtHandlerTest" />
+      <option name="METHOD_NAME" value="testPathAllowance(java.lang.String,boolean)" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test in cleanCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RobotsTxtHandlerTest.testPathNormalization" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/src/test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="crawler.fetcher.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="crawler.fetcher" />
+      <option name="MAIN_CLASS_NAME" value="crawler.fetcher.RobotsTxtHandlerTest" />
+      <option name="METHOD_NAME" value="testPathNormalization(java.lang.String,java.lang.String)" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.LinkFilterTest" />
       <item itemvalue="JUnit.CrawlerConfigTest" />
-      <item itemvalue="JUnit.PageResultTest.testPageResultWithNestedChildren" />
-      <item itemvalue="JUnit.WebCrawlerTest" />
-      <item itemvalue="JUnit.WebCrawlerTest.testCrawlWithValidConfig" />
-      <item itemvalue="JUnit.test in cleanCode" />
+      <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathAllowance" />
+      <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathNormalization" />
+      <item itemvalue="JUnit.RobotsTxtHandlerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LinkFilterTest" />
+        <item itemvalue="JUnit.RobotsTxtHandlerTest" />
+        <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathAllowance" />
+        <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathNormalization" />
         <item itemvalue="JUnit.CrawlerConfigTest" />
-        <item itemvalue="JUnit.test in cleanCode" />
-        <item itemvalue="JUnit.WebCrawlerTest.testCrawlWithValidConfig" />
-        <item itemvalue="JUnit.WebCrawlerTest" />
-        <item itemvalue="JUnit.PageResultTest.testPageResultWithNestedChildren" />
       </list>
     </recent_temporary>
   </component>
@@ -468,7 +478,31 @@
       <option name="project" value="LOCAL" />
       <updated>1745949591366</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Coding Together Session #3: Reworked Tests of CrawlerConfig and WebCrawler">
+      <option name="closed" value="true" />
+      <created>1745950573355</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1745950573355</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Coding Together Session #3: Reworked RobotsTxtHandler to properly normalize paths + more Tests">
+      <option name="closed" value="true" />
+      <created>1745951492251</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1745951492251</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust">
+      <option name="closed" value="true" />
+      <created>1745952690351</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1745952690351</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,9 +520,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Coding Together Session #1: Rudimentary Explanation on what each class should / will do" />
-    <MESSAGE value="Coding Together Session #1: Fixed Folder Structure" />
-    <MESSAGE value="Coding Together Session #1: added Heading and PageResult to represent a fetched Page" />
     <MESSAGE value="Coding Together Session #1: simplified PageResult to just be a Record Class, changed Package Structure again" />
     <MESSAGE value="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests" />
@@ -511,6 +542,9 @@
     <MESSAGE value="Coding Together Session #3:&#10;&#10;- RobotsTxtHandler: instead of having a switch case, we directly embed the function and just index by key&#10;- WebCrawler: initialising in the constructor is not good for mocking and modularity" />
     <MESSAGE value="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page" />
     <MESSAGE value="Coding Together Session #3: Rework of WebCrawler" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Rework of WebCrawler" />
+    <MESSAGE value="Coding Together Session #3: Reworked Tests of CrawlerConfig and WebCrawler" />
+    <MESSAGE value="Coding Together Session #3: Reworked RobotsTxtHandler to properly normalize paths + more Tests" />
+    <MESSAGE value="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust" />
   </component>
 </project>
