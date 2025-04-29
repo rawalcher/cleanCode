@@ -1,39 +1,77 @@
-# Web Crawler Assignment
+# Web Crawler Assignment – Group 12
 
-The task of this assignment is to develop a Web-Crawler in Java, which provides a compact overview of the given website and linked websites by only listing the headings and the links. The attached example-report.md shows an example of how the overview could look (feel free to improve the suggested layout).
+## Group Members
+- Carolin Aigensberger
+- Raphael Walcher
 
-## DRAFT How to start the application:
+**Note:**  
+The project was developed entirely using the *Code Together* feature of IntelliJ. Therefore, all Git commits appear under Raphael Walcher's name, but the development was performed via *pair programming* by both members.
 
- 
-On the command line that also contains the input arguments URL, depth, domains.  
-e.g. `crawler www.sample.com 5`
+---
 
+## Introduction
+The task of this assignment was to develop a web crawler in Java, which creates a compact overview of a given website and its linked websites. The overview includes only headings and links, organized according to crawl depth.
 
-## Must Have Features
+The crawler saves its output to a single Markdown (`.md`) file, following the example structure provided in `example-report.md`.
 
-The crawler MUST implement at least the following features:
+---
 
-- [X] Input the URL, the depth of websites to crawl, and the domain(s) of websites to be crawled
-- [X] Create a compact overview of the crawled websites:
-    - [X] Record only the headings
-    - [X] Represent the depth of the crawled websites with proper indentation (see example)
-    - [X] Record the URLs of the crawled sites
-    - [X] Highlight broken links
-- [X] Find the links to other websites and recursively do the analysis for those websites:
-    - [X] That can be reached within the given depth (to avoid very long runtimes)
-    - [X] And is located in one of the specified domain(s)
-    - [X] Also note, each website should be crawled only once
+## How to Build and Run
 
-## Additional Info
+### Build
+```bash
+mvn clean install
+```
 
-Note, also provide automated unit tests for each feature (we will not accept submissions without unit tests).
+### Run
+```bash
+java -jar target/webcrawler.jar <URL> <depth> <allowed-domains>
+```
+- `<URL>` – Starting URL to crawl
+- `<depth>` – Maximum depth to follow links
+- `<allowed-domains>` – Comma-separated list of domains to restrict crawling to
 
-### Implementation
+**Example:**
+```bash
+java -jar target/webcrawler.jar https://example.com 2 example.com,example.org
+```
 
-Regarding the implementation, please use:
-- A modern IDE (Eclipse, IntelliJ, Visual Code, etc.)
-- GitHub, GitLab, or BitBucket to version and share your sources
-- The repository must contain a README file briefly describing the steps to build, run, and test your crawler
-- A Java testing framework, e.g., JUnit for automating the tests
-- A build tool like Maven or Gradle to automate the build and testing of your solution
-- We suggest using an existing library, such as jsoup, for parsing HTML
+Alternatively, if you are using IntelliJ IDEA, you can use the provided *Run Configuration*.
+
+---
+
+## Features
+
+- [x] Accept input for URL, crawl depth, and allowed domains.
+- [x] Generate a compact overview:
+  - [x] List only headings (`<h1>`, `<h2>`, etc.).
+  - [x] Indent according to crawl depth.
+  - [x] Record URLs of the crawled pages.
+  - [x] Highlight broken links.
+- [x] Recursively crawl links:
+  - [x] Respect maximum depth.
+  - [x] Only crawl within allowed domains.
+  - [x] Ensure each website is crawled only once.
+- [x] Store results in a single `.md` file (Markdown format).
+
+---
+
+## Implementation Details
+
+- Programming Language: **Java**
+- HTML Parsing: **jsoup**
+- Build Tool: **Maven**
+- Testing Framework: **JUnit 5**
+- Version Control: **GitHub**
+
+---
+
+## Testing
+
+Automated **JUnit** tests are provided to cover all key features of the crawler, ensuring correctness and reliability.
+
+---
+
+## Notes
+
+Remember: This assignment is the foundation for Assignment 2. We ensured clean code, proper naming conventions, single-responsibility methods, and meaningful unit tests according to the project grading guidelines.
