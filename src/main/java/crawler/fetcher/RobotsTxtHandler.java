@@ -130,12 +130,26 @@ public class RobotsTxtHandler {
 
     URI normalizePath(String path) {
         try {
-            URI rawUri = new URI(path);
-            URI normalized = rawUri.normalize();
-            if (normalized.getPath() == null || normalized.getPath().isEmpty()) {
+            if (path == null || path.trim().isEmpty()) {
                 return URI.create("/");
             }
-            return normalized;
+
+            URI rawUri = new URI(path);
+            URI normalized = rawUri.normalize();
+            String normalizedPath = normalized.getPath();
+
+            if (normalizedPath == null ||
+                    normalizedPath.isEmpty() ||
+                    normalizedPath.startsWith("../") ||
+                    normalizedPath.contains("/../")) {
+                return URI.create("/");
+            }
+
+            if (!normalizedPath.startsWith("/")) {
+                normalizedPath = URI.create("/") + normalizedPath;
+            }
+
+            return URI.create(normalizedPath);
         } catch (Exception e) {
             logger.warn("Failed to normalize path '{}', defaulting to root '/'", path);
             return URI.create("/");

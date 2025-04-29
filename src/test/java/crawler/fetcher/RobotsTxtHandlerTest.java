@@ -1,67 +1,114 @@
 package crawler.fetcher;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RobotsTxtHandlerTest {
 
-    static class TestRobotsTxtHandler extends RobotsTxtHandler {
-        TestRobotsTxtHandler() {
-            super("TestBot", URI.create("https://example.com"));
-        }
+    private RobotsTxtHandler handler;
+    private static final URI BASE_URI = URI.create("https://example.com");
 
-        // Allow test to directly modify paths
-        void addAllow() {
-            allowedPaths.add(URI.create("/private/public"));
-        }
+    @BeforeEach
+    void setUp() {
+        handler = new RobotsTxtHandler("TestBot", BASE_URI);
+    }
 
-        void addDisallow() {
-            disallowedPaths.add(URI.create("/private"));
-        }
+    @ParameterizedTest
+    @CsvSource({
+            "/path/to/page,  true",
+            "/private,       false",
+            "/private/public,true"
+    })
+    void testPathAllowance(String path, boolean expectedAllowed) {
+        handler.disallowedPaths.add(URI.create("/private"));
+        handler.allowedPaths.add(URI.create("/private/public"));
+
+        URI testUri = BASE_URI.resolve(path);
+        assertEquals(expectedAllowed, handler.isAllowed(testUri),
+                "Path allowance should match expected result");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "/path/../another,        /another",
+            "/path/./to/page,         /path/to/page",
+            "/../outside,              /",
+            "/nested/../path,          /path",
+            "/very/deep/../nested,     /very/nested",
+            "../outside,                /",
+            "/../../,                   /",
+            "/../../../../../,          /",
+            "invalid:path,              /"
+    })
+    void testPathNormalization(String originalPath, String expectedNormalizedPath) {
+        URI normalized = handler.normalizePath(originalPath);
+
+        assertNotNull(normalized, "Normalized path should not be null");
+        assertEquals(expectedNormalizedPath, normalized.getPath(),
+                "Path should be correctly normalized");
     }
 
     @Test
-    void testIsAllowedWithNoRules() throws Exception {
-        RobotsTxtHandler handler = new TestRobotsTxtHandler();
+    void testInvalidPathNormalization() {
+        URI normalized = handler.normalizePath("invalid:path");
 
-        URI testUri = new URI("https://example.com/page");
-
-        assertTrue(handler.isAllowed(testUri));
+        assertEquals("/", normalized.getPath(),
+                "Invalid path should resolve to root");
     }
 
     @Test
-    void testIsDisallowed() throws Exception {
-        TestRobotsTxtHandler handler = new TestRobotsTxtHandler();
-        handler.addDisallow();
-
-        URI allowed = new URI("https://example.com/public/page");
-        URI disallowed = new URI("https://example.com/private/page");
-
-        assertTrue(handler.isAllowed(allowed));
-        assertFalse(handler.isAllowed(disallowed));
+    void testNormalizationOfRootPath() {
+        URI normalized = handler.normalizePath("");
+        assertEquals("/", normalized.getPath(),
+                "Empty path should normalize to root path");
     }
 
     @Test
-    void testIsAllowedOverridesDisallow() throws Exception {
-        TestRobotsTxtHandler handler = new TestRobotsTxtHandler();
-        handler.addDisallow();
-        handler.addAllow();
+    void testDefaultPathAllowance() {
+        URI testUri = URI.create("https://example.com/any/page");
+        assertTrue(handler.isAllowed(testUri),
+                "By default, all paths should be allowed");
+    }
 
-        URI allowed = new URI("https://example.com/private/public/page");
-        URI disallowed = new URI("https://example.com/private/secret");
-
-        assertTrue(handler.isAllowed(allowed));
-        assertFalse(handler.isAllowed(disallowed));
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "/",
+            "/index.html",
+            "/page",
+            "/deep/nested/path"
+    })
+    void testValidPathAllowance(String path) {
+        URI testUri = BASE_URI.resolve(path);
+        assertTrue(handler.isAllowed(testUri),
+                "Standard paths should be allowed by default");
     }
 
     @Test
-    void testNormalizePath() {
-        RobotsTxtHandler handler = new TestRobotsTxtHandler();
+    void testNullPathHandling() throws URISyntaxException {
+        URI testUri = new URI("https://example.com");
+        assertTrue(handler.isAllowed(testUri),
+                "URI with null path should be allowed");
+    }
 
-        URI normalized = handler.normalizePath("/path/../another");
-        assertEquals("/another", normalized.getPath());
+    @Test
+    void testComplexPathPrecedence() {
+        handler.disallowedPaths.add(URI.create("/private"));
+        handler.allowedPaths.add(URI.create("/private/public"));
+
+        URI disallowedUri = BASE_URI.resolve("/private/secret");
+        URI allowedUri = BASE_URI.resolve("/private/public/page");
+
+        assertFalse(handler.isAllowed(disallowedUri),
+                "More specific disallowed path should take precedence");
+        assertTrue(handler.isAllowed(allowedUri),
+                "Allowed path should override parent disallowed path");
     }
 }
