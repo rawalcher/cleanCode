@@ -21,6 +21,7 @@ public class RobotsTxtHandler {
 
     protected final Set<URI> disallowedPaths = new HashSet<>();
     protected final Set<URI> allowedPaths = new HashSet<>();
+    protected int delay = 0;
     private final String userAgent;
 
     public RobotsTxtHandler(String userAgent, URI baseUri) {
@@ -58,24 +59,56 @@ public class RobotsTxtHandler {
 
         while ((line = reader.readLine()) != null) {
             line = line.trim();
+            if (isIgnorableLine(line)) continue;
 
-            if (line.isEmpty() || line.startsWith("#")) {
-                continue;
-            }
+            String[] parts = line.split(":", 2);
 
-            if (line.toLowerCase().startsWith("user-agent:")) {
-                appliesToUs = checkUserAgent(line);
-            } else if (appliesToUs && line.toLowerCase().startsWith("disallow:")) {
-                addDisallowedPath(line);
-            } else if (appliesToUs && line.toLowerCase().startsWith("allow:")) {
-                addAllowedPath(line);
-            }
+            String key = parts[0].trim().toLowerCase();
+            String value = parts[1].trim();
+
+            appliesToUs = handleRobotsDirective(key, value, appliesToUs);
         }
 
-        logger.info("Finished parsing robots.txt: {} allowed, {} disallowed paths", allowedPaths.size(), disallowedPaths.size());
+        logger.info("Finished parsing robots.txt: {} allowed, {} disallowed paths, delay {}",
+                allowedPaths.size(), disallowedPaths.size(), delay);
+    }
+
+    private boolean isIgnorableLine(String line) {
+        return line.startsWith("#") || !line.contains(":");
+    }
+
+    private boolean handleRobotsDirective(String key, String value, boolean appliesToUs) {
+        switch (key) {
+            case "user-agent":
+                return checkUserAgent(value);
+            case "disallow":
+                if (appliesToUs) addDisallowedPath(value);
+                break;
+            case "allow":
+                if (appliesToUs) addAllowedPath(value);
+                break;
+            case "crawl-delay":
+                if (appliesToUs) parseCrawlDelay(value);
+                break;
+            default:
+                // do nothing as its maybe malformed
+        }
+        return appliesToUs;
+    }
+
+    private void parseCrawlDelay(String value) {
+        try {
+            this.delay = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            logger.warn("Invalid crawl-delay value in robots.txt: {}", value);
+        }
     }
 
     private boolean checkUserAgent(String line) {
+        if (line.length() <= 11) {
+            return false;
+        }
+
         String agent = line.substring(11).trim();
         return agent.equals("*") || agent.equalsIgnoreCase(userAgent);
     }

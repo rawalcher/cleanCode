@@ -32,7 +32,10 @@ public class WebCrawler {
     }
 
     public void crawl(CrawlerConfig config) {
+        long start = System.currentTimeMillis();
         PageResult rootResult = crawlPage(config.getRootUrl(), 0, config);
+        long end = System.currentTimeMillis();
+        logger.info("Crawl time: {} ms", end-start);
 
         // Generate report
         MarkdownReporter reporter = new MarkdownReporter();

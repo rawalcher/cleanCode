@@ -5,16 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #2: clean LinkFilter">
-      <change afterPath="$PROJECT_DIR$/src/test/java/crawler/fetcher/PageFetcherTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/crawler/fetcher/RobotsTxtCacheTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/crawler/fetcher/RobotsTxtHandlerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/parser/HtmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/parser/HtmlParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/parser/HtmlParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/parser/HtmlParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/model/PageResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/model/PageResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,67 +51,67 @@
     &quot;assignee&quot;: &quot;rawalcher&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/rawalcher/cleanCode.git&quot;,
-    &quot;accountId&quot;: &quot;b48b2165-a743-4314-9bb7-f711b897d6f8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/rawalcher/cleanCode",
+    "accountId": "b48b2165-a743-4314-9bb7-f711b897d6f8"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2v7TknoRnou8HkIe3PSO3v9Ewei" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.crawler.Main.executor": "Run",
-    "JUnit.All in cleanCode (1).executor": "Debug",
-    "JUnit.All in cleanCode.executor": "Run",
-    "JUnit.CrawlerConfigTest.executor": "Run",
-    "JUnit.HtmlParserTest.executor": "Run",
-    "JUnit.HtmlParserTest.testParseBrokenLinks.executor": "Run",
-    "JUnit.LinkFilterTest.executor": "Run",
-    "JUnit.MarkdownReporterTest.executor": "Run",
-    "JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks.executor": "Run",
-    "JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus.executor": "Run",
-    "JUnit.MarkdownReporterTest.testWriteSimpleReport.executor": "Run",
-    "JUnit.PageFetcherTest.executor": "Run",
-    "JUnit.PageResultTest.executor": "Run",
-    "JUnit.RobotsTxtCacheTest.executor": "Run",
-    "JUnit.RobotsTxtHandlerTest.executor": "Run",
-    "JUnit.java in cleanCode.executor": "Run",
-    "JUnit.test in cleanCode.executor": "Run",
-    "Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/Raphael/IdeaProjects/cleanCode/src/test",
-    "last_opened_file_path": "/home/rawalcher/Documents/cleanCode",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.crawler.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in cleanCode (1).executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.All in cleanCode.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CrawlerConfigTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HtmlParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HtmlParserTest.testParseBrokenLinks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LinkFilterTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MarkdownReporterTest.testWriteSimpleReport.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PageFetcherTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PageResultTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RobotsTxtCacheTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RobotsTxtHandlerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in cleanCode.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.test in cleanCode.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/Raphael/IdeaProjects/cleanCode/src/test&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/rawalcher/Documents/cleanCode&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="main.java.crawler" />
@@ -212,16 +212,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="lua.app" factoryName="Lua Application">
-      <option name="program" value="/usr/bin/lua" />
-      <option name="file" value="" />
-      <option name="workingDir" value="$PROJECT_DIR$/src/main/java" />
-      <option name="debuggerType" value="2" />
-      <option name="params" value="" />
-      <option name="charset" value="UTF-8" />
-      <option name="showConsole" value="true" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.HtmlParserTest" />
@@ -243,8 +233,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
       </set>
     </attachedChunks>
   </component>
@@ -261,6 +251,7 @@
       <workItem from="1745490925025" duration="2085000" />
       <workItem from="1745493020716" duration="5665000" />
       <workItem from="1745762921209" duration="6596000" />
+      <workItem from="1745913394250" duration="5278000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
