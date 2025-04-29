@@ -28,12 +28,15 @@ class PageFetcherTest {
             mockedJsoup.when(() -> Jsoup.connect(url.toString())).thenReturn(mockConnection);
             when(mockConnection.timeout(anyInt())).thenReturn(mockConnection);
             when(mockConnection.userAgent(anyString())).thenReturn(mockConnection);
+            when(mockConnection.ignoreHttpErrors(true)).thenReturn(mockConnection);
+            when(mockConnection.ignoreContentType(true)).thenReturn(mockConnection);
+            when(mockConnection.followRedirects(true)).thenReturn(mockConnection);
             when(mockConnection.get()).thenReturn(fakeDoc);
 
             Document result = fetcher.fetch(url);
 
             assertNotNull(result);
-            assertTrue(result.title().contains("Fake Page"));
+            assertEquals("Fake Page", result.title());
         }
     }
 
@@ -47,10 +50,12 @@ class PageFetcherTest {
             mockedJsoup.when(() -> Jsoup.connect(url.toString())).thenReturn(mockConnection);
             when(mockConnection.timeout(anyInt())).thenReturn(mockConnection);
             when(mockConnection.userAgent(anyString())).thenReturn(mockConnection);
+            when(mockConnection.ignoreHttpErrors(true)).thenReturn(mockConnection);
+            when(mockConnection.ignoreContentType(true)).thenReturn(mockConnection);
+            when(mockConnection.followRedirects(true)).thenReturn(mockConnection);
             when(mockConnection.get()).thenThrow(new IOException("Failed to connect"));
 
             assertThrows(PageFetcher.FetchException.class, () -> fetcher.fetch(url));
         }
     }
 }
-

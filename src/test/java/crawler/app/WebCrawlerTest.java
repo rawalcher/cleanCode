@@ -88,11 +88,12 @@ class WebCrawlerTest {
 
     @Test
     void testCrawlPageExceedsMaxDepth() {
+        PageResult expectedResult = new PageResult(URI.create("https://example.com"), 3, true, List.of(), Set.of());
         int exceedingDepth = config.getMaxDepth() + 1;
 
         PageResult result = crawler.crawlPage(rootUrl, exceedingDepth, config);
 
-        assertNull(result);
+        assertEquals(expectedResult, result);
         verifyNoInteractions(mockFetcher);
     }
 
@@ -101,19 +102,22 @@ class WebCrawlerTest {
         when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(true);
         when(mockLinkFilter.isVisited(rootUrl)).thenReturn(true);
 
+        PageResult expectedResult = new PageResult(URI.create("https://example.com"), 0, true, List.of(), Set.of());
+
         PageResult result = crawler.crawlPage(rootUrl, 0, config);
 
-        assertNull(result);
+        assertEquals(expectedResult, result);
         verifyNoInteractions(mockFetcher);
     }
 
     @Test
     void testCrawlPageDisallowedDomain() {
         when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(false);
+        PageResult expectedResult = new PageResult(URI.create("https://example.com"), 0, true, List.of(), Set.of());
 
         PageResult result = crawler.crawlPage(rootUrl, 0, config);
 
-        assertNull(result);
+        assertEquals(expectedResult, result);
         verifyNoInteractions(mockFetcher);
     }
 

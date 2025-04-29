@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Assignment 1 done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,12 +54,12 @@
     <option name="currentCommit" value="1" />
     <option name="onto" value="675b6072d29db2931a27701e1fd8cd8c294e8150" />
   </component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/rawalcher/cleanCode&quot;,
-    &quot;accountId&quot;: &quot;b48b2165-a743-4314-9bb7-f711b897d6f8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/rawalcher/cleanCode.git",
+    "accountId": "b48b2165-a743-4314-9bb7-f711b897d6f8"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -93,6 +93,7 @@
     "JUnit.RobotsTxtHandlerTest.testPathAllowance.executor": "Run",
     "JUnit.RobotsTxtHandlerTest.testPathNormalization.executor": "Run",
     "JUnit.WebCrawlerTest.executor": "Run",
+    "JUnit.WebCrawlerTest.testCrawlPageDisallowedDomain.executor": "Run",
     "JUnit.WebCrawlerTest.testCrawlWithValidConfig.executor": "Run",
     "JUnit.java in cleanCode.executor": "Run",
     "JUnit.test in cleanCode.executor": "Run",
@@ -143,22 +144,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="CrawlerConfigTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.model" />
-      <option name="MAIN_CLASS_NAME" value="crawler.model.CrawlerConfigTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.test in cleanCode">
     <configuration name="LinkFilterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
@@ -205,45 +191,53 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RobotsTxtHandlerTest.testPathNormalization" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="WebCrawlerTest.testCrawlPageDisallowedDomain" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="crawler.fetcher.*" />
+          <option name="PATTERN" value="crawler.app.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="crawler.fetcher" />
-      <option name="MAIN_CLASS_NAME" value="crawler.fetcher.RobotsTxtHandlerTest" />
-      <option name="METHOD_NAME" value="testPathNormalization(java.lang.String,java.lang.String)" />
+      <option name="PACKAGE_NAME" value="crawler.app" />
+      <option name="MAIN_CLASS_NAME" value="crawler.app.WebCrawlerTest" />
+      <option name="METHOD_NAME" value="testCrawlPageDisallowedDomain" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test in cleanCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cleanCode" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.WebCrawlerTest.testCrawlPageDisallowedDomain" />
+      <item itemvalue="JUnit.test in cleanCode" />
       <item itemvalue="JUnit.LinkFilterTest" />
-      <item itemvalue="JUnit.CrawlerConfigTest" />
       <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathAllowance" />
-      <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathNormalization" />
       <item itemvalue="JUnit.RobotsTxtHandlerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.test in cleanCode" />
+        <item itemvalue="JUnit.WebCrawlerTest.testCrawlPageDisallowedDomain" />
         <item itemvalue="JUnit.LinkFilterTest" />
         <item itemvalue="JUnit.RobotsTxtHandlerTest" />
         <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathAllowance" />
-        <item itemvalue="JUnit.RobotsTxtHandlerTest.testPathNormalization" />
-        <item itemvalue="JUnit.CrawlerConfigTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
-        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -261,6 +255,7 @@
       <workItem from="1745493020716" duration="5665000" />
       <workItem from="1745762921209" duration="6596000" />
       <workItem from="1745913394250" duration="5278000" />
+      <workItem from="1745953526716" duration="328000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -502,7 +497,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745952690351</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Coding Together Session #3: Assignment 1 done">
+      <option name="closed" value="true" />
+      <created>1745953389655</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1745953389655</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -520,7 +523,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Coding Together Session #1: simplified PageResult to just be a Record Class, changed Package Structure again" />
     <MESSAGE value="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
@@ -545,6 +547,8 @@
     <MESSAGE value="Coding Together Session #3: Reworked Tests of CrawlerConfig and WebCrawler" />
     <MESSAGE value="Coding Together Session #3: Reworked RobotsTxtHandler to properly normalize paths + more Tests" />
     <MESSAGE value="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust" />
+    <MESSAGE value="Coding Together Session #3: Assignment 1 done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Assignment 1 done" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

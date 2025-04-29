@@ -86,6 +86,7 @@ public class WebCrawler {
         logger.info("Crawling {} at depth {}", url, depth);
 
         if (!isAllowedByRobots(url)) {
+            // we treat non allowed like broken links
             return PageResult.brokenLink(url, depth);
         }
 
