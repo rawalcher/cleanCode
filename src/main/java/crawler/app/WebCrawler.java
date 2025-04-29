@@ -85,10 +85,6 @@ public class WebCrawler {
     PageResult crawlPage(URI url, int depth, CrawlerConfig config) {
         logger.info("Crawling {} at depth {}", url, depth);
 
-        if (shouldSkipUrl(url, depth, config)) {
-            return null;
-        }
-
         if (!isAllowedByRobots(url)) {
             return PageResult.brokenLink(url, depth);
         }
@@ -99,33 +95,6 @@ public class WebCrawler {
             logger.warn("Failed to fetch {}: {}", url, e.getMessage());
             return PageResult.brokenLink(url, depth);
         }
-    }
-
-    /**
-     * Determines whether a URL should be skipped based on depth, domain, and visit history.
-     *
-     * @param url    The URL to check
-     * @param depth  The current depth
-     * @param config The crawl configuration
-     * @return true if the URL should be skipped, false otherwise
-     */
-    private boolean shouldSkipUrl(URI url, int depth, CrawlerConfig config) {
-        if (depth > config.getMaxDepth()) {
-            logger.info("Max depth reached at {}", depth);
-            return true;
-        }
-
-        if (!linkFilter.isAllowedDomain(url, config.getAllowedDomains())) {
-            logger.info("Domain not allowed for {}", url);
-            return true;
-        }
-
-        if (linkFilter.isVisited(url)) {
-            logger.info("Already visited {}", url);
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -177,7 +146,7 @@ public class WebCrawler {
         }
 
         for (URI link : links) {
-            if (!shouldSkipUrl(link, depth + 1, config)) {  // pre-check
+            if (isLinkEligibleForCrawling(link, depth, config)) {
                 PageResult child = crawlPage(link, depth + 1, config);
                 if (child != null) {
                     children.add(child);
@@ -186,5 +155,11 @@ public class WebCrawler {
         }
 
         return children;
+    }
+
+    private boolean isLinkEligibleForCrawling(URI link, int depth, CrawlerConfig config) {
+        return !linkFilter.isVisited(link) &&
+                linkFilter.isAllowedDomain(link, config.getAllowedDomains()) &&
+                depth + 1 <= config.getMaxDepth();
     }
 }
