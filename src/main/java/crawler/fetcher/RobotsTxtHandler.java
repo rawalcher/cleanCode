@@ -9,7 +9,9 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 /**
  * Simple robots.txt handler: downloads and parses robots.txt,
@@ -77,21 +79,20 @@ public class RobotsTxtHandler {
         return line.startsWith("#") || !line.contains(":");
     }
 
+    private final Map<String, BiConsumer<String, Boolean>> directiveHandlers = Map.of(
+            "disallow", (value, applies) -> { if (Boolean.TRUE.equals(applies)) addDisallowedPath(value); },
+            "allow", (value, applies) -> { if (Boolean.TRUE.equals(applies)) addAllowedPath(value); },
+            "crawl-delay", (value, applies) -> { if (Boolean.TRUE.equals(applies)) parseCrawlDelay(value); }
+    );
+
     private boolean handleRobotsDirective(String key, String value, boolean appliesToUs) {
-        switch (key) {
-            case "user-agent":
-                return checkUserAgent(value);
-            case "disallow":
-                if (appliesToUs) addDisallowedPath(value);
-                break;
-            case "allow":
-                if (appliesToUs) addAllowedPath(value);
-                break;
-            case "crawl-delay":
-                if (appliesToUs) parseCrawlDelay(value);
-                break;
-            default:
-                // do nothing as its maybe malformed
+        if (key.equals("user-agent")) {
+            return checkUserAgent(value);
+        }
+
+        BiConsumer<String, Boolean> handler = directiveHandlers.get(key);
+        if (handler != null) {
+            handler.accept(value, appliesToUs);
         }
         return appliesToUs;
     }

@@ -1,5 +1,6 @@
 package crawler.fetcher;
 
+import crawler.constants.CrawlerConstants;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.HttpStatusException;
@@ -12,8 +13,6 @@ import java.net.URI;
  */
 public class PageFetcher {
 
-    private static final int TIMEOUT_MILLIS = 2000;
-
     /**
      * Fetches a page and returns its Jsoup Document.
      *
@@ -24,7 +23,7 @@ public class PageFetcher {
     public Document fetch(URI url) throws FetchException {
         try {
             return Jsoup.connect(url.toString())
-                    .timeout(TIMEOUT_MILLIS)
+                    .timeout(CrawlerConstants.CONNECTION_TIMEOUT_MS)
                     .userAgent("SimpleWebCrawlerBot/1.0")
                     .get();
         } catch (HttpStatusException e) {

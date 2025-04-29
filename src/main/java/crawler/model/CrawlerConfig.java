@@ -9,11 +9,19 @@ public class CrawlerConfig {
     private final List<String> allowedDomains;
 
     public CrawlerConfig(URI url, int maxDepth, String... domains) {
+        if (url == null) {
+            throw new IllegalArgumentException("URL cannot be null.");
+        }
         this.rootUrl = url;
+
         if (maxDepth < 0) {
             throw new IllegalArgumentException("Depth must be non-negative.");
         }
         this.maxDepth = maxDepth;
+
+        if (domains == null) {
+            throw new IllegalArgumentException("Domains cannot be null.");
+        }
         this.allowedDomains = List.of(domains);
     }
 

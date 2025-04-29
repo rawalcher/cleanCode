@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class WebCrawler {
@@ -24,11 +25,11 @@ public class WebCrawler {
     private final RobotsTxtCache robotsCache;
     private final LinkFilter linkFilter;
 
-    public WebCrawler() {
-        this.fetcher = new PageFetcher();
-        this.parser = new HtmlParser();
-        this.robotsCache = new RobotsTxtCache("SimpleWebCrawlerBot/1.0");
-        this.linkFilter = new LinkFilter();
+    public WebCrawler(PageFetcher fetcher, HtmlParser parser,RobotsTxtCache robotsCache, LinkFilter linkFilter) {
+        this.fetcher = fetcher;
+        this.parser = parser;
+        this.robotsCache = robotsCache;
+        this.linkFilter = linkFilter;
     }
 
     public void crawl(CrawlerConfig config) {
@@ -94,16 +95,21 @@ public class WebCrawler {
     private PageResult fetchAndParse(URI url, int depth, CrawlerConfig config) throws PageFetcher.FetchException {
         Document document = fetcher.fetch(url);
         PageResult page = parser.parse(url, depth, document);
+        Set<PageResult> children = processChildLinks(page.links(), depth, config);
 
+        return new PageResult(page.url(), page.depth(), page.broken(),
+                page.headings(), page.links(), children);
+    }
+
+    private Set<PageResult> processChildLinks(List<URI> links, int depth, CrawlerConfig config) {
         Set<PageResult> children = new HashSet<>();
-        for (URI link : page.links()) {
+        for (URI link : links) {
             PageResult child = crawlPage(link, depth + 1, config);
             if (child != null) {
                 children.add(child);
             }
         }
-
-        return new PageResult(page.url(), page.depth(), page.broken(), page.headings(), page.links(), children);
+        return children;
     }
 
 

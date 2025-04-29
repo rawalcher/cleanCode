@@ -1,5 +1,6 @@
 package crawler.reporter;
 
+import crawler.constants.CrawlerConstants;
 import crawler.model.CrawlerConfig;
 import crawler.model.PageResult;
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import java.net.URI;
  */
 public class MarkdownReporter {
     private static final Logger logger = LoggerFactory.getLogger(MarkdownReporter.class);
-    private static final String OUTPUT_FILE = "report.md";
 
     /**
      * Writes the crawl results starting from the root PageResult into a Markdown file.
@@ -28,9 +28,9 @@ public class MarkdownReporter {
             logger.error("Cannot write report: root or config is null.");
             return;
         }
-        try (PrintWriter writer = new PrintWriter(new FileWriter(OUTPUT_FILE))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(CrawlerConstants.REPORT_FILENAME))) {
             writeToWriter(root, config, writer);
-            logger.info("Successfully wrote report to '{}'", OUTPUT_FILE);
+            logger.info("Successfully wrote report to '{}'", CrawlerConstants.REPORT_FILENAME);
         } catch (IOException e) {
             logger.error("Failed to write report: {}", e.getMessage());
         }

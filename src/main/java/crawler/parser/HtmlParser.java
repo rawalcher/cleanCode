@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static crawler.constants.CrawlerConstants.MAX_HEADING_LEVEL;
+
 /**
  * Parses PageFetcher output into PageResult.
  */
 public class HtmlParser {
-    private static final int MAX_HEADING_LEVEL = 6;
-
     /**
      * Parses a jsoup Document into a PageResult.
      *

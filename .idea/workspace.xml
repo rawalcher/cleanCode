@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #2: clean LinkFilter">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/PageFetcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/model/PageResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/model/PageResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,17 +43,17 @@
     &quot;assignee&quot;: &quot;rawalcher&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/rawalcher/cleanCode",
-    "accountId": "b48b2165-a743-4314-9bb7-f711b897d6f8"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/rawalcher/cleanCode&quot;,
+    &quot;accountId&quot;: &quot;b48b2165-a743-4314-9bb7-f711b897d6f8&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2v7TknoRnou8HkIe3PSO3v9Ewei" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -405,7 +397,23 @@
       <option name="project" value="LOCAL" />
       <updated>1745769146554</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity">
+      <option name="closed" value="true" />
+      <created>1745940076128</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1745940076128</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity">
+      <option name="closed" value="true" />
+      <created>1745940080658</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1745940080658</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,6 +451,7 @@
     <MESSAGE value="Coding Together Session #2: clean HtmlParser" />
     <MESSAGE value="Coding Together Session #2: clean MarkdownReporter" />
     <MESSAGE value="Coding Together Session #2: clean LinkFilter" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #2: clean LinkFilter" />
+    <MESSAGE value="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity" />
   </component>
 </project>
