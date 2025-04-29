@@ -2,6 +2,8 @@ package crawler.constants;
 
 public class CrawlerConstants {
 
+    private CrawlerConstants() {}
+
     public static final int CONNECTION_TIMEOUT_MS = 2000;
     public static final String USER_AGENT = "SimpleWebCrawlerBot/1.0";
 

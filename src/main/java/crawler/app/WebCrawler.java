@@ -2,7 +2,6 @@ package crawler.app;
 
 import crawler.fetcher.PageFetcher;
 import crawler.fetcher.RobotsTxtCache;
-import crawler.fetcher.RobotsTxtHandler;
 import crawler.model.CrawlerConfig;
 import crawler.model.PageResult;
 import crawler.parser.HtmlParser;
@@ -17,6 +16,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Main web crawler implementation that coordinates the crawling process.
+ * Handles page fetching, parsing, filtering, and reporting.
+ */
 public class WebCrawler {
     private static final Logger logger = LoggerFactory.getLogger(WebCrawler.class);
 
@@ -24,32 +27,71 @@ public class WebCrawler {
     private final HtmlParser parser;
     private final RobotsTxtCache robotsCache;
     private final LinkFilter linkFilter;
+    private final MarkdownReporter reporter;
 
-    public WebCrawler(PageFetcher fetcher, HtmlParser parser,RobotsTxtCache robotsCache, LinkFilter linkFilter) {
+    /**
+     * Creates a new WebCrawler with injected dependencies.
+     *
+     * @param fetcher     Component for fetching web pages
+     * @param parser      Component for parsing HTML content
+     * @param robotsCache Component for checking robots.txt rules
+     * @param linkFilter  Component for filtering links
+     * @param reporter    Component for generating reports
+     */
+    public WebCrawler(PageFetcher fetcher, HtmlParser parser, RobotsTxtCache robotsCache,
+                      LinkFilter linkFilter, MarkdownReporter reporter) {
         this.fetcher = fetcher;
         this.parser = parser;
         this.robotsCache = robotsCache;
         this.linkFilter = linkFilter;
+        this.reporter = reporter;
     }
 
+    /**
+     * Executes the crawling process according to the provided configuration.
+     *
+     * @param config The configuration for this crawl
+     */
     public void crawl(CrawlerConfig config) {
-        long start = System.currentTimeMillis();
-        PageResult rootResult = crawlPage(config.getRootUrl(), 0, config);
-        long end = System.currentTimeMillis();
-        logger.info("Crawl time: {} ms", end-start);
+        if (config == null) {
+            logger.error("Crawl config cannot be null");
+            return;
+        }
 
-        // Generate report
-        MarkdownReporter reporter = new MarkdownReporter();
-        reporter.writeReport(rootResult, config);
+        long start = System.currentTimeMillis();
+
+        // Perform the crawl starting from the root URL
+        PageResult rootResult = crawlPage(config.getRootUrl(), 0, config);
+
+        long end = System.currentTimeMillis();
+        logger.info("Crawl time: {} ms", end - start);
+
+        // Generate report from crawl results
+        if (rootResult != null) {
+            reporter.writeReport(rootResult, config);
+        } else {
+            logger.warn("No crawl results were generated");
+        }
     }
 
-    private PageResult crawlPage(URI url, int depth, CrawlerConfig config) {
+    /**
+     * Recursively crawls a page and its links up to the configured depth.
+     *
+     * @param url    The URL to crawl
+     * @param depth  The current crawl depth
+     * @param config The crawl configuration
+     * @return A PageResult containing the crawl results, or null if the page should be skipped
+     */
+    PageResult crawlPage(URI url, int depth, CrawlerConfig config) {
         logger.info("Crawling {} at depth {}", url, depth);
 
-        if (isOutOfDepth(depth, config)) return null;
-        if (!isDomainAllowed(url, config)) return null;
-        if (isAlreadyVisited(url)) return null;
-        if (!isAllowedByRobots(url)) return PageResult.brokenLink(url, depth);
+        if (shouldSkipUrl(url, depth, config)) {
+            return null;
+        }
+
+        if (!isAllowedByRobots(url)) {
+            return PageResult.brokenLink(url, depth);
+        }
 
         try {
             return fetchAndParse(url, depth, config);
@@ -59,60 +101,90 @@ public class WebCrawler {
         }
     }
 
-    private boolean isOutOfDepth(int depth, CrawlerConfig config) {
+    /**
+     * Determines whether a URL should be skipped based on depth, domain, and visit history.
+     *
+     * @param url    The URL to check
+     * @param depth  The current depth
+     * @param config The crawl configuration
+     * @return true if the URL should be skipped, false otherwise
+     */
+    private boolean shouldSkipUrl(URI url, int depth, CrawlerConfig config) {
         if (depth > config.getMaxDepth()) {
             logger.info("Max depth reached at {}", depth);
             return true;
         }
-        return false;
-    }
 
-    private boolean isDomainAllowed(URI url, CrawlerConfig config) {
         if (!linkFilter.isAllowedDomain(url, config.getAllowedDomains())) {
             logger.info("Domain not allowed for {}", url);
-            return false;
+            return true;
         }
-        return true;
-    }
 
-    private boolean isAlreadyVisited(URI url) {
         if (linkFilter.isVisited(url)) {
             logger.info("Already visited {}", url);
             return true;
         }
+
         return false;
     }
 
+    /**
+     * Checks if a URL is allowed according to the site's robots.txt rules.
+     *
+     * @param url The URL to check
+     * @return true if the URL is allowed, false otherwise
+     */
     private boolean isAllowedByRobots(URI url) {
-        RobotsTxtHandler robotsHandler = robotsCache.getHandler(url);
-        if (!robotsHandler.isAllowed(url)) {
+        boolean allowed = robotsCache.getHandler(url).isAllowed(url);
+        if (!allowed) {
             logger.warn("Blocked by robots.txt: {}", url);
-            return false;
         }
-        return true;
+        return allowed;
     }
 
-    private PageResult fetchAndParse(URI url, int depth, CrawlerConfig config) throws PageFetcher.FetchException {
+    /**
+     * Fetches and parses a URL, then recursively processes its links.
+     *
+     * @param url    The URL to fetch and parse
+     * @param depth  The current depth
+     * @param config The crawl configuration
+     * @return A PageResult containing the page content and child pages
+     * @throws PageFetcher.FetchException If the page cannot be fetched
+     */
+    private PageResult fetchAndParse(URI url, int depth, CrawlerConfig config)
+            throws PageFetcher.FetchException {
+
         Document document = fetcher.fetch(url);
         PageResult page = parser.parse(url, depth, document);
-        Set<PageResult> children = processChildLinks(page.links(), depth, config);
+        Set<PageResult> children = processChildLinks(page.getAllLinks(), depth, config);
 
-        return new PageResult(page.url(), page.depth(), page.broken(),
-                page.headings(), page.links(), children);
+        return page.withChildren(children);
     }
 
+    /**
+     * Processes a list of links by crawling each one at an incremented depth.
+     *
+     * @param links  The links to process
+     * @param depth  The parent depth (children will be at depth+1)
+     * @param config The crawl configuration
+     * @return A set of PageResults for the successfully crawled links
+     */
     private Set<PageResult> processChildLinks(List<URI> links, int depth, CrawlerConfig config) {
         Set<PageResult> children = new HashSet<>();
+
+        if (links == null || links.isEmpty()) {
+            return children;
+        }
+
         for (URI link : links) {
-            PageResult child = crawlPage(link, depth + 1, config);
-            if (child != null) {
-                children.add(child);
+            if (!shouldSkipUrl(link, depth + 1, config)) {  // pre-check
+                PageResult child = crawlPage(link, depth + 1, config);
+                if (child != null) {
+                    children.add(child);
+                }
             }
         }
+
         return children;
     }
-
-
 }
-
-

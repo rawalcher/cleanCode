@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity">
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/fetcher/RobotsTxtHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/constants/CrawlerConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/constants/CrawlerConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +47,16 @@
     &quot;assignee&quot;: &quot;rawalcher&quot;
   }
 }</component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity" />
+        <option name="rewordedMessage" value="Coding Together Session #3:&#10;&#10;- RobotsTxtHandler: instead of having a switch case, we directly embed the function and just index by key&#10;- WebCrawler: initialising in the constructor is not good for mocking and modularity" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="675b6072d29db2931a27701e1fd8cd8c294e8150" />
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/rawalcher/cleanCode&quot;,
@@ -60,50 +74,51 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.crawler.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in cleanCode (1).executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.All in cleanCode.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CrawlerConfigTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HtmlParserTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HtmlParserTest.testParseBrokenLinks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LinkFilterTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MarkdownReporterTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MarkdownReporterTest.testWriteSimpleReport.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PageFetcherTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PageResultTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RobotsTxtCacheTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RobotsTxtHandlerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.java in cleanCode.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.test in cleanCode.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;C:/Users/Raphael/IdeaProjects/cleanCode/src/test&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/rawalcher/Documents/cleanCode&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.crawler.Main.executor": "Run",
+    "JUnit.All in cleanCode (1).executor": "Debug",
+    "JUnit.All in cleanCode.executor": "Run",
+    "JUnit.CrawlerConfigTest.executor": "Run",
+    "JUnit.HtmlParserTest.executor": "Run",
+    "JUnit.HtmlParserTest.testParseBrokenLinks.executor": "Run",
+    "JUnit.LinkFilterTest.executor": "Run",
+    "JUnit.MarkdownReporterTest.executor": "Run",
+    "JUnit.MarkdownReporterTest.testWritePage_EmptyHeadingsAndLinks.executor": "Run",
+    "JUnit.MarkdownReporterTest.testWritePage_IncludesBrokenStatus.executor": "Run",
+    "JUnit.MarkdownReporterTest.testWriteSimpleReport.executor": "Run",
+    "JUnit.PageFetcherTest.executor": "Run",
+    "JUnit.PageResultTest.executor": "Run",
+    "JUnit.PageResultTest.testPageResultWithNestedChildren.executor": "Run",
+    "JUnit.RobotsTxtCacheTest.executor": "Run",
+    "JUnit.RobotsTxtHandlerTest.executor": "Run",
+    "JUnit.java in cleanCode.executor": "Run",
+    "JUnit.test in cleanCode.executor": "Run",
+    "Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Users/Raphael/IdeaProjects/cleanCode/src/test",
+    "last_opened_file_path": "/home/rawalcher/Documents/cleanCode",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="main.java.crawler" />
@@ -127,7 +142,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.test in cleanCode">
     <configuration name="HtmlParserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
@@ -143,63 +158,56 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LinkFilterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MarkdownReporterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="crawler.util.*" />
+          <option name="PATTERN" value="crawler.reporter.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="crawler.util" />
-      <option name="MAIN_CLASS_NAME" value="crawler.util.LinkFilterTest" />
+      <option name="PACKAGE_NAME" value="crawler.reporter" />
+      <option name="MAIN_CLASS_NAME" value="crawler.reporter.MarkdownReporterTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PageFetcherTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PageResultTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="crawler.fetcher.*" />
+          <option name="PATTERN" value="crawler.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="crawler.fetcher" />
-      <option name="MAIN_CLASS_NAME" value="crawler.fetcher.PageFetcherTest" />
+      <option name="PACKAGE_NAME" value="crawler.model" />
+      <option name="MAIN_CLASS_NAME" value="crawler.model.PageResultTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RobotsTxtCacheTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PageResultTest.testPageResultWithNestedChildren" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="crawler.fetcher.*" />
+          <option name="PATTERN" value="crawler.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="crawler.fetcher" />
-      <option name="MAIN_CLASS_NAME" value="crawler.fetcher.RobotsTxtCacheTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="crawler.model" />
+      <option name="MAIN_CLASS_NAME" value="crawler.model.PageResultTest" />
+      <option name="METHOD_NAME" value="testPageResultWithNestedChildren" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RobotsTxtHandlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="test in cleanCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.fetcher.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.fetcher" />
-      <option name="MAIN_CLASS_NAME" value="crawler.fetcher.RobotsTxtHandlerTest" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -207,18 +215,18 @@
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.HtmlParserTest" />
-      <item itemvalue="JUnit.LinkFilterTest" />
-      <item itemvalue="JUnit.PageFetcherTest" />
-      <item itemvalue="JUnit.RobotsTxtCacheTest" />
-      <item itemvalue="JUnit.RobotsTxtHandlerTest" />
+      <item itemvalue="JUnit.PageResultTest" />
+      <item itemvalue="JUnit.PageResultTest.testPageResultWithNestedChildren" />
+      <item itemvalue="JUnit.test in cleanCode" />
+      <item itemvalue="JUnit.MarkdownReporterTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RobotsTxtHandlerTest" />
-        <item itemvalue="JUnit.RobotsTxtCacheTest" />
-        <item itemvalue="JUnit.PageFetcherTest" />
-        <item itemvalue="JUnit.LinkFilterTest" />
+        <item itemvalue="JUnit.test in cleanCode" />
+        <item itemvalue="JUnit.PageResultTest.testPageResultWithNestedChildren" />
         <item itemvalue="JUnit.HtmlParserTest" />
+        <item itemvalue="JUnit.PageResultTest" />
+        <item itemvalue="JUnit.MarkdownReporterTest" />
       </list>
     </recent_temporary>
   </component>
@@ -413,7 +421,47 @@
       <option name="project" value="LOCAL" />
       <updated>1745940080658</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Coding Together Session #2: Clean Code RobotsTxtHandler&#10;&#10;- instead of having a switch case, we directly embed the function and just index by key">
+      <option name="closed" value="true" />
+      <created>1745940212795</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1745940212795</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Coding Together Session #2: added better input validation for CrawlerConfig">
+      <option name="closed" value="true" />
+      <created>1745940349462</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1745940349462</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Coding Together Session #3:">
+      <option name="closed" value="true" />
+      <created>1745940641075</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1745940641076</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page">
+      <option name="closed" value="true" />
+      <created>1745948567249</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1745948567249</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page">
+      <option name="closed" value="true" />
+      <created>1745949360616</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1745949360616</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -431,7 +479,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial Commit" />
     <MESSAGE value="Coding Together Session #1: Initial Draft" />
     <MESSAGE value="Coding Together Session #1: Rudimentary Explanation on what each class should / will do" />
     <MESSAGE value="Coding Together Session #1: Fixed Folder Structure" />
@@ -452,6 +499,11 @@
     <MESSAGE value="Coding Together Session #2: clean MarkdownReporter" />
     <MESSAGE value="Coding Together Session #2: clean LinkFilter" />
     <MESSAGE value="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #2: Clean Code WebCrawler&#10;&#10;- initialising in the constructor is not good for mocking and modularity" />
+    <MESSAGE value="Coding Together Session #2: Clean Code RobotsTxtHandler&#10;&#10;- instead of having a switch case, we directly embed the function and just index by key" />
+    <MESSAGE value="Coding Together Session #2: added better input validation for CrawlerConfig" />
+    <MESSAGE value="Coding Together Session #3:" />
+    <MESSAGE value="Coding Together Session #3:&#10;&#10;- RobotsTxtHandler: instead of having a switch case, we directly embed the function and just index by key&#10;- WebCrawler: initialising in the constructor is not good for mocking and modularity" />
+    <MESSAGE value="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page" />
   </component>
 </project>

@@ -5,6 +5,7 @@ import crawler.fetcher.PageFetcher;
 import crawler.fetcher.RobotsTxtCache;
 import crawler.model.CrawlerConfig;
 import crawler.parser.HtmlParser;
+import crawler.reporter.MarkdownReporter;
 import crawler.util.LinkFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,8 @@ public class Main {
         HtmlParser parser = new HtmlParser();
         RobotsTxtCache robotsCache = new RobotsTxtCache(USER_AGENT);
         LinkFilter linkFilter = new LinkFilter();
+        MarkdownReporter reporter = new MarkdownReporter();
 
-        return new WebCrawler(fetcher, parser, robotsCache, linkFilter);
+        return new WebCrawler(fetcher, parser, robotsCache, linkFilter, reporter);
     }
 }
