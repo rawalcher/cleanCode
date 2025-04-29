@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Rework of WebCrawler">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/constants/CrawlerConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/constants/CrawlerConstants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -93,6 +89,8 @@
     "JUnit.PageResultTest.testPageResultWithNestedChildren.executor": "Run",
     "JUnit.RobotsTxtCacheTest.executor": "Run",
     "JUnit.RobotsTxtHandlerTest.executor": "Run",
+    "JUnit.WebCrawlerTest.executor": "Run",
+    "JUnit.WebCrawlerTest.testCrawlWithValidConfig.executor": "Run",
     "JUnit.java in cleanCode.executor": "Run",
     "JUnit.test in cleanCode.executor": "Run",
     "Maven.cleanCode [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
@@ -142,38 +140,8 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.test in cleanCode">
-    <configuration name="HtmlParserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.parser.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.parser" />
-      <option name="MAIN_CLASS_NAME" value="crawler.parser.HtmlParserTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MarkdownReporterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="cleanCode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="crawler.reporter.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="crawler.reporter" />
-      <option name="MAIN_CLASS_NAME" value="crawler.reporter.MarkdownReporterTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PageResultTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.CrawlerConfigTest">
+    <configuration name="CrawlerConfigTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
         <pattern>
@@ -182,7 +150,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="crawler.model" />
-      <option name="MAIN_CLASS_NAME" value="crawler.model.PageResultTest" />
+      <option name="MAIN_CLASS_NAME" value="crawler.model.CrawlerConfigTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -204,6 +172,37 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="WebCrawlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cleanCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="crawler.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="crawler.app" />
+      <option name="MAIN_CLASS_NAME" value="crawler.app.WebCrawlerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebCrawlerTest.testCrawlWithValidConfig" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cleanCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="crawler.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="crawler.app" />
+      <option name="MAIN_CLASS_NAME" value="crawler.app.WebCrawlerTest" />
+      <option name="METHOD_NAME" value="testCrawlWithValidConfig" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="test in cleanCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <option name="TEST_OBJECT" value="directory" />
@@ -214,19 +213,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="JUnit.HtmlParserTest" />
-      <item itemvalue="JUnit.PageResultTest" />
+      <item itemvalue="JUnit.CrawlerConfigTest" />
       <item itemvalue="JUnit.PageResultTest.testPageResultWithNestedChildren" />
+      <item itemvalue="JUnit.WebCrawlerTest" />
+      <item itemvalue="JUnit.WebCrawlerTest.testCrawlWithValidConfig" />
       <item itemvalue="JUnit.test in cleanCode" />
-      <item itemvalue="JUnit.MarkdownReporterTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CrawlerConfigTest" />
         <item itemvalue="JUnit.test in cleanCode" />
+        <item itemvalue="JUnit.WebCrawlerTest.testCrawlWithValidConfig" />
+        <item itemvalue="JUnit.WebCrawlerTest" />
         <item itemvalue="JUnit.PageResultTest.testPageResultWithNestedChildren" />
-        <item itemvalue="JUnit.HtmlParserTest" />
-        <item itemvalue="JUnit.PageResultTest" />
-        <item itemvalue="JUnit.MarkdownReporterTest" />
       </list>
     </recent_temporary>
   </component>
@@ -461,7 +460,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745949360616</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Coding Together Session #3: Rework of WebCrawler">
+      <option name="closed" value="true" />
+      <created>1745949591366</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1745949591366</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -479,7 +486,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Coding Together Session #1: Initial Draft" />
     <MESSAGE value="Coding Together Session #1: Rudimentary Explanation on what each class should / will do" />
     <MESSAGE value="Coding Together Session #1: Fixed Folder Structure" />
     <MESSAGE value="Coding Together Session #1: added Heading and PageResult to represent a fetched Page" />
@@ -504,6 +510,7 @@
     <MESSAGE value="Coding Together Session #3:" />
     <MESSAGE value="Coding Together Session #3:&#10;&#10;- RobotsTxtHandler: instead of having a switch case, we directly embed the function and just index by key&#10;- WebCrawler: initialising in the constructor is not good for mocking and modularity" />
     <MESSAGE value="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Completly reworked Parsing, Storing and Printing a Page" />
+    <MESSAGE value="Coding Together Session #3: Rework of WebCrawler" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Rework of WebCrawler" />
   </component>
 </project>
