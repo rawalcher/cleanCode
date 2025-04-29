@@ -1,73 +1,97 @@
 package crawler.parser;
 
 import crawler.model.PageResult;
+import crawler.model.PageResult.Section;
+import crawler.model.PageResult.Heading;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static crawler.constants.CrawlerConstants.MAX_HEADING_LEVEL;
 
 /**
- * Parses PageFetcher output into PageResult.
+ * HTML parser that converts a jsoup Document
+ * into a PageResult. It preserves document order and guarantees deterministic link ordering.
  */
 public class HtmlParser {
+    private static final Heading ROOT_HEADING = new Heading(0, "Page Root");
+
     /**
-     * Parses a jsoup Document into a PageResult.
+     * Parses the given document into a PageResult.
      *
-     * @param url     The URL of the page
-     * @param depth   The current crawl depth
-     * @param document The jsoup Document to parse
-     * @return Parsed PageResult
+     * @param url      page URL
+     * @param depth    crawl depth
+     * @param document jsoup document
+     * @return corresponding {@code PageResult}
      */
     public PageResult parse(URI url, int depth, Document document) {
-        List<PageResult.Heading> headings = extractHeadings(document);
-        List<URI> links = extractLinks(document, url);
-
-        return new PageResult(url, depth, false, headings, links, Set.of());
+        if (document == null) {
+            return new PageResult(url, depth, false, List.of(), java.util.Set.of());
+        }
+        List<Section> sections = extractSections(document, url);
+        return new PageResult(url, depth, false, sections, java.util.Set.of());
     }
 
-    private List<PageResult.Heading> extractHeadings(Document document) {
-        List<PageResult.Heading> headings = new ArrayList<>();
-        if (document == null) return headings;
 
-        for (int level = 1; level <= MAX_HEADING_LEVEL; level++) {
-            Elements elements = document.select("h" + level);
-            for (Element element : elements) {
-                String text = element.text();
-                if (!text.isBlank()) {
-                    headings.add(new PageResult.Heading(level, text.trim()));
+    private List<Section> extractSections(Document doc, URI baseUrl) {
+        Map<Heading, LinkedHashSet<URI>> buckets = new LinkedHashMap<>();
+        Heading current = ROOT_HEADING;
+        buckets.put(current, new LinkedHashSet<>());
+
+        for (Element el : doc.getAllElements()) {
+            Optional<Heading> maybeHeading = extractHeading(el);
+            if (maybeHeading.isPresent()) {
+                current = maybeHeading.get();
+                buckets.put(current, new LinkedHashSet<>());
+                continue;
+            }
+
+            URI link = extractLink(el, baseUrl);
+            if (link != null) {
+                buckets.get(current).add(link);
+            }
+        }
+
+        return buckets.entrySet().stream()
+                .filter(e -> e.getKey().level() != 0 || !e.getValue().isEmpty())
+                .map(e -> new Section(e.getKey(), e.getValue()))
+                .toList();
+    }
+
+    private static Optional<Heading> extractHeading(Element el) {
+        String tag = el.tagName();
+        if (tag.length() == 2 && tag.charAt(0) == 'h') {
+            int level = tag.charAt(1) - '0';
+            if (level >= 1 && level <= MAX_HEADING_LEVEL) {
+                String text = el.text().trim();
+                if (!text.isEmpty()) {
+                    return Optional.of(new Heading(level, text));
                 }
             }
         }
-        return headings;
+        return Optional.empty();
     }
 
-    private List<URI> extractLinks(Document document, URI baseUrl) {
-        List<URI> links = new ArrayList<>();
-        if (document == null || baseUrl == null) return links;
-
-        Elements elements = document.select("a[href]");
-        for (Element element : elements) {
-            String href = element.attr("href");
-            if (!href.isBlank()) {
-                try {
-                    links.add(baseUrl.resolve(href.trim()));
-                } catch (IllegalArgumentException e) {
-                    // Bad href syntax → still store as-is if possible since assignment asks for it!
-                    try {
-                        links.add(new URI(href.trim()));
-                    } catch (URISyntaxException ignored) {
-                        // Ignore completely invalid hrefs
-                    }
-                }
+    private static URI extractLink(Element el, URI base) {
+        if (!"a".equals(el.tagName())) {
+            return null;
+        }
+        String href = el.attr("href");
+        if (href.isBlank()) {
+            return null;
+        }
+        String trimmed = href.trim();
+        try {
+            return base.resolve(trimmed);
+        } catch (IllegalArgumentException e) { // bad relative link
+            try {
+                return new URI(trimmed);
+            } catch (URISyntaxException ex) {
+                return null; // hopelessly malformed
             }
         }
-        return links;
     }
 }

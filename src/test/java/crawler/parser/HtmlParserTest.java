@@ -1,131 +1,99 @@
 package crawler.parser;
 
 import crawler.model.PageResult;
+import crawler.model.PageResult.Section;
+import crawler.model.PageResult.Heading;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HtmlParserTest {
 
     private final HtmlParser parser = new HtmlParser();
+    private static final URI BASE_URI = URI.create("https://example.com");
 
     @Test
-    void testParseNormalHeadingsAndLinks() throws Exception {
-        Document doc = createDocumentWithHeadingsAndLinks();
-        URI baseUrl = new URI("https://example.com");
-
-        PageResult result = parser.parse(baseUrl, 0, doc);
-
-        List<PageResult.Heading> headings = result.headings();
-        List<URI> links = result.links();
-
-        assertEquals(2, headings.size());
-        assertEquals(2, links.size());
-    }
-
-    @Test
-    void testParseEmptyDocument() throws Exception {
-        Document emptyDoc = Jsoup.parse("");
-        URI baseUrl = new URI("https://example.com");
-
-        PageResult result = parser.parse(baseUrl, 0, emptyDoc);
-
-        assertTrue(result.headings().isEmpty());
-        assertTrue(result.links().isEmpty());
-    }
-
-    @Test
-    void testParseCompletelyBrokenLinks() throws Exception {
-        Document doc = createDocumentWithBrokenLinks();
-        URI baseUrl = new URI("https://example.com");
-
-        PageResult result = parser.parse(baseUrl, 0, doc);
-
-        assertTrue(result.links().isEmpty());
-    }
-
-    @Test
-    void testParseRelativeAndFragmentLinks() throws Exception {
-        Document doc = createDocumentWithRelativeAndFragmentLinks();
-        URI baseUrl = new URI("https://example.com");
-
-        PageResult result = parser.parse(baseUrl, 0, doc);
-        List<URI> links = result.links();
-
-        assertEquals(2, links.size());
-        assertTrue(links.stream().anyMatch(uri -> uri.toString().equals("https://example.com/contact")));
-        assertTrue(links.stream().anyMatch(uri -> uri.toString().equals("https://example.com#top")));
-    }
-
-    @Test
-    void testParseIgnoreHeadingsAboveH6() throws Exception {
-        Document doc = createDocumentWithInvalidHeading();
-        URI baseUrl = new URI("https://example.com");
-
-        PageResult result = parser.parse(baseUrl, 0, doc);
-        List<PageResult.Heading> headings = result.headings();
-
-        assertEquals(1, headings.size());
-        assertEquals("Valid Heading", headings.getFirst().text());
-    }
-
-    @Test
-    void testParseIgnoreEmptyHeadings() throws Exception {
-        Document doc = createDocumentWithEmptyAndValidHeading();
-        URI baseUrl = new URI("https://example.com");
-
-        PageResult result = parser.parse(baseUrl, 0, doc);
-        List<PageResult.Heading> headings = result.headings();
-
-        assertEquals(1, headings.size());
-        assertEquals("Valid Heading", headings.getFirst().text());
-    }
-
-    private Document createDocumentWithHeadingsAndLinks() {
+    void parsesHeadingsAndLinks_preservesOrder() {
         Document doc = Jsoup.parse("");
         Element body = doc.body();
         body.appendElement("h1").text("Main Heading");
-        body.appendElement("h2").text("Sub Heading");
-        body.appendElement("a").attr("href", "https://example.com/page1").text("Link 1");
-        body.appendElement("a").attr("href", "/relative/path").text("Relative Link");
-        return doc;
+        body.appendElement("a").attr("href", "https://example.com/first").text("L1");
+        body.appendElement("a").attr("href", "/second").text("L2");
+
+        PageResult pr = parser.parse(BASE_URI, 0, doc);
+        assertEquals(1, pr.sections().size(), "One section expected");
+
+        Section s = pr.sections().getFirst();
+        assertEquals(new Heading(1, "Main Heading"), s.heading());
+        assertEquals(2, s.links().size());
+
+        List<String> linkStrings = new ArrayList<>(s.links())
+                .stream().map(URI::toString).toList();
+        assertEquals(List.of(
+                "https://example.com/first",
+                "https://example.com/second"), linkStrings);
     }
 
-    private Document createDocumentWithBrokenLinks() {
-        Document doc = Jsoup.parse("");
-        Element body = doc.body();
-        body.appendElement("a").attr("href", "ht!tp://invalid-url").text("Broken Link");
-        body.appendElement("a").text("No href link");
-        return doc;
+    @Test
+    void emptyDocument_givesNoSections() {
+        Document empty = Jsoup.parse("");
+        PageResult pr = parser.parse(BASE_URI, 0, empty);
+        assertTrue(pr.sections().isEmpty());
     }
 
-    private Document createDocumentWithRelativeAndFragmentLinks() {
+    @Test
+    void discardsCompletelyBrokenLinks() {
         Document doc = Jsoup.parse("");
-        Element body = doc.body();
-        body.appendElement("a").attr("href", "/contact").text("Contact");
-        body.appendElement("a").attr("href", "#top").text("Top");
-        return doc;
+        doc.body().appendElement("a").attr("href", "ht!tp://bad").text("bad");
+        PageResult pr = parser.parse(BASE_URI, 0, doc);
+        assertTrue(pr.sections().isEmpty(), "Broken link should be ignored so root section filtered out");
     }
 
-    private Document createDocumentWithInvalidHeading() {
+    @Test
+    void resolvesRelativeAndFragmentLinks_underRootHeading() {
         Document doc = Jsoup.parse("");
         Element body = doc.body();
-        body.appendElement("h7").text("Invalid Heading"); // Should be ignored
-        body.appendElement("h1").text("Valid Heading");   // Should be picked up
-        return doc;
+        body.appendElement("a").attr("href", "/contact");
+        body.appendElement("a").attr("href", "#top");
+
+        PageResult pr = parser.parse(BASE_URI, 0, doc);
+        assertEquals(1, pr.sections().size());
+        Section root = pr.sections().getFirst();
+        assertEquals(0, root.heading().level());
+
+        Set<String> links = root.links().stream()
+                .map(URI::toString)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        assertEquals(Set.of("https://example.com/contact", "https://example.com#top"), links);
     }
 
-    private Document createDocumentWithEmptyAndValidHeading() {
+    @Test
+    void ignoresHeadingsAboveH6() {
         Document doc = Jsoup.parse("");
-        Element body = doc.body();
-        body.appendElement("h1").text("    "); // Empty text
-        body.appendElement("h2").text("Valid Heading");
-        return doc;
+        doc.body().appendElement("h7").text("SkipMe");
+        doc.body().appendElement("h1").text("Valid");
+        PageResult pr = parser.parse(BASE_URI, 0, doc);
+        assertEquals(1, pr.sections().size());
+        assertEquals("Valid", pr.sections().getFirst().heading().text());
+    }
+
+    @Test
+    void ignoresEmptyHeadingText() {
+        Document doc = Jsoup.parse("");
+        doc.body().appendElement("h2").text("   ");
+        doc.body().appendElement("h3").text("Good");
+        PageResult pr = parser.parse(BASE_URI, 0, doc);
+        assertEquals(1, pr.sections().size());
+        assertEquals("Good", pr.sections().getFirst().heading().text());
     }
 }
