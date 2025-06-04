@@ -4,17 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #4: Fixed &quot;Issues&quot;">
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/adapters/HtmlDocument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/adapters/HtmlDocumentSource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/adapters/JsoupDocumentSource.java" afterDir="false" />
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #4: Made Error Handling more robust + made Document Fetching more Abstract">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ConcurrentCrawlerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ConcurrentWebCrawler.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/CrawlTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ThreadSafeLinkFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/CrawlError.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/DefaultErrorHandlingStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/ErrorCollector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/ErrorHandlingStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/factory/CrawlerFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/reporter/EnhancedMarkdownReporter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Concurrent_8_Thread.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +84,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Concurrent 8 Thread.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.crawler.Main.executor": "Run",
     "JUnit.All in cleanCode (1).executor": "Debug",
@@ -115,6 +116,7 @@
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "extract.method.default.visibility": "private",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
@@ -156,7 +158,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.test in cleanCode">
+  <component name="RunManager" selected="Application.Concurrent 8 Thread">
     <configuration name="LinkFilterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
@@ -228,7 +230,7 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Concurrent 8 Thread" />
       <item itemvalue="JUnit.WebCrawlerTest.testCrawlPageDisallowedDomain" />
       <item itemvalue="JUnit.test in cleanCode" />
       <item itemvalue="JUnit.LinkFilterTest" />
@@ -269,7 +271,7 @@
       <workItem from="1745913394250" duration="5278000" />
       <workItem from="1745953526716" duration="810000" />
       <workItem from="1746893634365" duration="10000" />
-      <workItem from="1749040406781" duration="2762000" />
+      <workItem from="1749040406781" duration="4400000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -535,7 +537,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749041235243</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Coding Together Session #4: Made Error Handling more robust + made Document Fetching more Abstract">
+      <option name="closed" value="true" />
+      <created>1749046045170</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1749046045170</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -553,7 +563,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig simplified, Heading turned into Record and merged into PageResult" />
     <MESSAGE value="Coding Together Session #1: added Tests for CrawlerConfig and PageResult" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
@@ -578,7 +587,8 @@
     <MESSAGE value="Coding Together Session #3: Assignment 1 done" />
     <MESSAGE value="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)" />
     <MESSAGE value="Coding Together Session #4: Fixed &quot;Issues&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #4: Fixed &quot;Issues&quot;" />
+    <MESSAGE value="Coding Together Session #4: Made Error Handling more robust + made Document Fetching more Abstract" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #4: Made Error Handling more robust + made Document Fetching more Abstract" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>
