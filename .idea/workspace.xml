@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)">
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #4: Fixed &quot;Issues&quot;">
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/adapters/HtmlDocument.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/adapters/HtmlDocumentSource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/adapters/JsoupDocumentSource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/CrawlTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ThreadSafeLinkFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/CrawlError.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/DefaultErrorHandlingStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/ErrorCollector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/error/ErrorHandlingStrategy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/parser/HtmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/parser/HtmlParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/util/LinkFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/util/LinkFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/reporter/MarkdownReporterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/reporter/MarkdownReporterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -264,7 +269,7 @@
       <workItem from="1745913394250" duration="5278000" />
       <workItem from="1745953526716" duration="810000" />
       <workItem from="1746893634365" duration="10000" />
-      <workItem from="1749040406781" duration="746000" />
+      <workItem from="1749040406781" duration="2762000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -522,7 +527,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745953993722</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Coding Together Session #4: Fixed &quot;Issues&quot;">
+      <option name="closed" value="true" />
+      <created>1749041235243</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1749041235243</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -540,7 +553,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig simplified, Heading turned into Record and merged into PageResult" />
     <MESSAGE value="Coding Together Session #1: added Tests for CrawlerConfig and PageResult" />
@@ -565,7 +577,8 @@
     <MESSAGE value="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust" />
     <MESSAGE value="Coding Together Session #3: Assignment 1 done" />
     <MESSAGE value="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)" />
+    <MESSAGE value="Coding Together Session #4: Fixed &quot;Issues&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #4: Fixed &quot;Issues&quot;" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>
