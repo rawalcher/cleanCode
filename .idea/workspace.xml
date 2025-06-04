@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Assignment 1 done">
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/parser/HtmlParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/parser/HtmlParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/util/LinkFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/util/LinkFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/reporter/MarkdownReporterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/reporter/MarkdownReporterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,17 +56,21 @@
     <option name="currentCommit" value="1" />
     <option name="onto" value="675b6072d29db2931a27701e1fd8cd8c294e8150" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/rawalcher/cleanCode.git",
-    "accountId": "b48b2165-a743-4314-9bb7-f711b897d6f8"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/rawalcher/cleanCode.git&quot;,
+    &quot;accountId&quot;: &quot;b48b2165-a743-4314-9bb7-f711b897d6f8&quot;
   }
+}</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
 }]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2v7TknoRnou8HkIe3PSO3v9Ewei" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -106,6 +112,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "C:/Users/Raphael/IdeaProjects/cleanCode/src/test",
     "last_opened_file_path": "/home/rawalcher/Documents/cleanCode",
@@ -236,8 +243,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
       </set>
     </attachedChunks>
   </component>
@@ -255,7 +262,9 @@
       <workItem from="1745493020716" duration="5665000" />
       <workItem from="1745762921209" duration="6596000" />
       <workItem from="1745913394250" duration="5278000" />
-      <workItem from="1745953526716" duration="328000" />
+      <workItem from="1745953526716" duration="810000" />
+      <workItem from="1746893634365" duration="10000" />
+      <workItem from="1749040406781" duration="746000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -505,7 +514,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745953389655</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)">
+      <option name="closed" value="true" />
+      <created>1745953993722</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1745953993722</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -523,7 +540,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Coding Together Session #1: Smell in Main, WebCrawler Skeleton and Run Config to Run Main for aau.at" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig simplified, Heading turned into Record and merged into PageResult" />
@@ -548,7 +564,8 @@
     <MESSAGE value="Coding Together Session #3: Reworked RobotsTxtHandler to properly normalize paths + more Tests" />
     <MESSAGE value="Coding Together Session #3: WebCrawler works again, made LinkFilter more robust" />
     <MESSAGE value="Coding Together Session #3: Assignment 1 done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Assignment 1 done" />
+    <MESSAGE value="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

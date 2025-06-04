@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Validates domains, detects visited URLs, and filters links based on domain/duplication rules.
@@ -17,12 +18,15 @@ public class LinkFilter {
         if (host == null) {
             return false;
         }
-        return allowedDomains.stream().anyMatch(host::endsWith);
+
+        Predicate<String> isHostAllowed = host::endsWith;
+        return allowedDomains.stream().anyMatch(isHostAllowed);
     }
+
 
     /**
      * Checks if the URL has been visited before.
-     * If not visited, marks it as visited and returns false.
+     * If not visited, mark it as visited and return false.
      *
      * @param url URI to check
      * @return true if already visited, false if this is a new URL

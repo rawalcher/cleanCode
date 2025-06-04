@@ -1,14 +1,15 @@
 package crawler.parser;
 
 import crawler.model.PageResult;
-import crawler.model.PageResult.Section;
 import crawler.model.PageResult.Heading;
+import crawler.model.PageResult.Section;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static crawler.constants.CrawlerConstants.MAX_HEADING_LEVEL;
 
@@ -56,10 +57,13 @@ public class HtmlParser {
         }
 
         return buckets.entrySet().stream()
-                .filter(e -> e.getKey().level() != 0 || !e.getValue().isEmpty())
+                .filter(IS_VALID_SECTION)
                 .map(e -> new Section(e.getKey(), e.getValue()))
                 .toList();
     }
+
+    private static final Predicate<Map.Entry<Heading, LinkedHashSet<URI>>> IS_VALID_SECTION =
+            entry -> entry.getKey().level() != 0 || !entry.getValue().isEmpty();
 
     private static Optional<Heading> extractHeading(Element el) {
         String tag = el.tagName();

@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class WebCrawlerTest {
@@ -54,32 +55,69 @@ class WebCrawlerTest {
         when(mockRobotsCache.getHandler(any(URI.class))).thenReturn(mockRobotsHandler);
     }
 
+    private void configureMockForSuccessfulCrawl(URI url, int depth, PageResult mockResult) {
+        when(mockLinkFilter.isAllowedDomain(url, config.getAllowedDomains())).thenReturn(true);
+        when(mockLinkFilter.isVisited(url)).thenReturn(false);
+        when(mockRobotsHandler.isAllowed(url)).thenReturn(true);
+
+        try {
+            when(mockFetcher.fetch(url)).thenReturn(mockDocument);
+        } catch (PageFetcher.FetchException e) {
+            fail("Mock setup failed: " + e.getMessage());
+        }
+
+        when(mockParser.parse(eq(url), eq(depth), any(Document.class))).thenReturn(mockResult);
+    }
+
+    private void configureMockForBlockedByRobots(URI url) {
+        when(mockLinkFilter.isAllowedDomain(url, config.getAllowedDomains())).thenReturn(true);
+        when(mockLinkFilter.isVisited(url)).thenReturn(false);
+        when(mockRobotsHandler.isAllowed(url)).thenReturn(false);
+    }
+
+    private void configureMockForDisallowedDomain(URI url) {
+        when(mockLinkFilter.isAllowedDomain(url, config.getAllowedDomains())).thenReturn(false);
+    }
+
+    private void configureMockForVisitedUrl(URI url) {
+        when(mockLinkFilter.isAllowedDomain(url, config.getAllowedDomains())).thenReturn(true);
+        when(mockLinkFilter.isVisited(url)).thenReturn(true);
+    }
+
+    private void configureMockForFetchFailure(URI url) throws PageFetcher.FetchException {
+        when(mockLinkFilter.isAllowedDomain(url, config.getAllowedDomains())).thenReturn(true);
+        when(mockLinkFilter.isVisited(url)).thenReturn(false);
+        when(mockRobotsHandler.isAllowed(url)).thenReturn(true);
+        when(mockFetcher.fetch(url)).thenThrow(new PageFetcher.FetchException("Test error", new Exception()));
+    }
+
+    private PageResult createMockPageResult(URI url, int depth, List<URI> links) {
+        PageResult mockResult = mock(PageResult.class);
+        when(mockResult.url()).thenReturn(url);
+        when(mockResult.depth()).thenReturn(depth);
+        when(mockResult.broken()).thenReturn(false);
+        when(mockResult.sections()).thenReturn(List.of());
+        when(mockResult.children()).thenReturn(Set.of());
+        when(mockResult.getAllLinks()).thenReturn(links);
+        when(mockResult.withChildren(any())).thenReturn(mockResult);
+        return mockResult;
+    }
+
+    private PageResult createBrokenPageResult(URI url, int depth) {
+        return new PageResult(url, depth, true, List.of(), Set.of());
+    }
+
     @Test
     void testCrawlWithNullConfig() {
-
         crawler.crawl(null);
 
         verifyNoInteractions(mockFetcher, mockParser, mockReporter);
     }
 
     @Test
-    void testCrawlWithValidConfig() throws Exception {
-
-        PageResult mockResult = mock(PageResult.class);
-        when(mockResult.url()).thenReturn(rootUrl);
-        when(mockResult.depth()).thenReturn(0);
-        when(mockResult.broken()).thenReturn(false);
-        when(mockResult.sections()).thenReturn(List.of());
-        when(mockResult.children()).thenReturn(Set.of());
-        when(mockResult.getAllLinks()).thenReturn(List.of());
-        when(mockResult.withChildren(any())).thenReturn(mockResult);
-
-        when(mockLinkFilter.isAllowedDomain(any(URI.class), anyList())).thenReturn(true);
-        when(mockLinkFilter.isVisited(rootUrl)).thenReturn(false);
-        when(mockRobotsHandler.isAllowed(any(URI.class))).thenReturn(true);
-
-        when(mockFetcher.fetch(rootUrl)).thenReturn(mockDocument);
-        when(mockParser.parse(eq(rootUrl), eq(0), any(Document.class))).thenReturn(mockResult);
+    void testCrawlWithValidConfig() {
+        PageResult mockResult = createMockPageResult(rootUrl, 0, List.of());
+        configureMockForSuccessfulCrawl(rootUrl, 0, mockResult);
 
         crawler.crawl(config);
 
@@ -88,7 +126,7 @@ class WebCrawlerTest {
 
     @Test
     void testCrawlPageExceedsMaxDepth() {
-        PageResult expectedResult = new PageResult(URI.create("https://example.com"), 3, true, List.of(), Set.of());
+        PageResult expectedResult = createBrokenPageResult(rootUrl, 3);
         int exceedingDepth = config.getMaxDepth() + 1;
 
         PageResult result = crawler.crawlPage(rootUrl, exceedingDepth, config);
@@ -99,10 +137,8 @@ class WebCrawlerTest {
 
     @Test
     void testCrawlPageAlreadyVisited() {
-        when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(true);
-        when(mockLinkFilter.isVisited(rootUrl)).thenReturn(true);
-
-        PageResult expectedResult = new PageResult(URI.create("https://example.com"), 0, true, List.of(), Set.of());
+        configureMockForVisitedUrl(rootUrl);
+        PageResult expectedResult = createBrokenPageResult(rootUrl, 0);
 
         PageResult result = crawler.crawlPage(rootUrl, 0, config);
 
@@ -112,8 +148,8 @@ class WebCrawlerTest {
 
     @Test
     void testCrawlPageDisallowedDomain() {
-        when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(false);
-        PageResult expectedResult = new PageResult(URI.create("https://example.com"), 0, true, List.of(), Set.of());
+        configureMockForDisallowedDomain(rootUrl);
+        PageResult expectedResult = createBrokenPageResult(rootUrl, 0);
 
         PageResult result = crawler.crawlPage(rootUrl, 0, config);
 
@@ -123,9 +159,7 @@ class WebCrawlerTest {
 
     @Test
     void testCrawlPageBlockedByRobotsTxt() {
-        when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(true);
-        when(mockLinkFilter.isVisited(rootUrl)).thenReturn(false);
-        when(mockRobotsHandler.isAllowed(rootUrl)).thenReturn(false);
+        configureMockForBlockedByRobots(rootUrl);
 
         PageResult result = crawler.crawlPage(rootUrl, 0, config);
 
@@ -138,11 +172,7 @@ class WebCrawlerTest {
 
     @Test
     void testCrawlPageFetchFailure() throws Exception {
-        when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(true);
-        when(mockLinkFilter.isVisited(rootUrl)).thenReturn(false);
-        when(mockRobotsHandler.isAllowed(rootUrl)).thenReturn(true);
-
-        when(mockFetcher.fetch(rootUrl)).thenThrow(new PageFetcher.FetchException("Test error", new Exception()));
+        configureMockForFetchFailure(rootUrl);
 
         PageResult result = crawler.crawlPage(rootUrl, 0, config);
 
@@ -155,20 +185,8 @@ class WebCrawlerTest {
 
     @Test
     void testCrawlPageSuccessfulFetch() throws Exception {
-        PageResult mockResult = mock(PageResult.class);
-        when(mockResult.url()).thenReturn(rootUrl);
-        when(mockResult.depth()).thenReturn(0);
-        when(mockResult.broken()).thenReturn(false);
-        when(mockResult.sections()).thenReturn(List.of());
-        when(mockResult.children()).thenReturn(Set.of());
-        when(mockResult.getAllLinks()).thenReturn(List.of());
-        when(mockResult.withChildren(any())).thenReturn(mockResult);
-
-        when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(true);
-        when(mockLinkFilter.isVisited(rootUrl)).thenReturn(false);
-        when(mockRobotsHandler.isAllowed(rootUrl)).thenReturn(true);
-        when(mockFetcher.fetch(rootUrl)).thenReturn(mockDocument);
-        when(mockParser.parse(eq(rootUrl), eq(0), any(Document.class))).thenReturn(mockResult);
+        PageResult mockResult = createMockPageResult(rootUrl, 0, List.of());
+        configureMockForSuccessfulCrawl(rootUrl, 0, mockResult);
 
         PageResult result = crawler.crawlPage(rootUrl, 0, config);
 
@@ -182,34 +200,12 @@ class WebCrawlerTest {
     void testCrawlPageWithChildLinks() throws Exception {
         URI childUrl = new URI("https://example.com/child");
 
-        PageResult rootResult = mock(PageResult.class);
-        when(rootResult.url()).thenReturn(rootUrl);
-        when(rootResult.depth()).thenReturn(0);
-        when(rootResult.broken()).thenReturn(false);
-        when(rootResult.sections()).thenReturn(List.of());
-        when(rootResult.children()).thenReturn(Set.of());
-        when(rootResult.getAllLinks()).thenReturn(List.of(childUrl));
-        when(rootResult.withChildren(any())).thenReturn(rootResult);
+        PageResult rootResult = createMockPageResult(rootUrl, 0, List.of(childUrl));
+        PageResult childResult = createMockPageResult(childUrl, 1, List.of());
 
-        PageResult childResult = mock(PageResult.class);
-        when(childResult.url()).thenReturn(childUrl);
-        when(childResult.depth()).thenReturn(1);
-        when(childResult.broken()).thenReturn(false);
-        when(childResult.sections()).thenReturn(List.of());
-        when(childResult.children()).thenReturn(Set.of());
-        when(childResult.getAllLinks()).thenReturn(List.of());
+        configureMockForSuccessfulCrawl(rootUrl, 0, rootResult);
 
-        when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(true);
-        when(mockLinkFilter.isVisited(rootUrl)).thenReturn(false);
-        when(mockRobotsHandler.isAllowed(rootUrl)).thenReturn(true);
-        when(mockFetcher.fetch(rootUrl)).thenReturn(mockDocument);
-        when(mockParser.parse(eq(rootUrl), eq(0), any(Document.class))).thenReturn(rootResult);
-
-        when(mockLinkFilter.isAllowedDomain(childUrl, config.getAllowedDomains())).thenReturn(true);
-        when(mockLinkFilter.isVisited(childUrl)).thenReturn(false);
-        when(mockRobotsHandler.isAllowed(childUrl)).thenReturn(true);
-        when(mockFetcher.fetch(childUrl)).thenReturn(mockDocument);
-        when(mockParser.parse(eq(childUrl), eq(1), any(Document.class))).thenReturn(childResult);
+        configureMockForSuccessfulCrawl(childUrl, 1, childResult);
 
         crawler.crawlPage(rootUrl, 0, config);
 
@@ -222,23 +218,12 @@ class WebCrawlerTest {
         URI visitedLink = new URI("https://example.com/visited");
         URI disallowedLink = new URI("https://other.com/disallowed");
 
-        PageResult rootResult = mock(PageResult.class);
-        when(rootResult.url()).thenReturn(rootUrl);
-        when(rootResult.depth()).thenReturn(0);
-        when(rootResult.broken()).thenReturn(false);
-        when(rootResult.sections()).thenReturn(List.of());
-        when(rootResult.children()).thenReturn(Set.of());
-        when(rootResult.getAllLinks()).thenReturn(List.of(visitedLink, disallowedLink));
-        when(rootResult.withChildren(any())).thenReturn(rootResult);
+        PageResult rootResult = createMockPageResult(rootUrl, 0, List.of(visitedLink, disallowedLink));
 
-        when(mockLinkFilter.isAllowedDomain(rootUrl, config.getAllowedDomains())).thenReturn(true);
-        when(mockLinkFilter.isVisited(rootUrl)).thenReturn(false);
-        when(mockRobotsHandler.isAllowed(rootUrl)).thenReturn(true);
-        when(mockFetcher.fetch(rootUrl)).thenReturn(mockDocument);
-        when(mockParser.parse(eq(rootUrl), eq(0), any(Document.class))).thenReturn(rootResult);
+        configureMockForSuccessfulCrawl(rootUrl, 0, rootResult);
 
-        when(mockLinkFilter.isVisited(visitedLink)).thenReturn(true);
-        when(mockLinkFilter.isAllowedDomain(disallowedLink, config.getAllowedDomains())).thenReturn(false);
+        configureMockForVisitedUrl(visitedLink);
+        configureMockForDisallowedDomain(disallowedLink);
 
         crawler.crawlPage(rootUrl, 0, config);
 

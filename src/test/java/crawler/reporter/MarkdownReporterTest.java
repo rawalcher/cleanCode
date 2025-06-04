@@ -14,8 +14,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MarkdownReporterTest {
 
@@ -25,6 +27,10 @@ class MarkdownReporterTest {
 
     private StringWriter buffer;
     private PrintWriter  writer;
+
+    private static final String NEWLINE = "\n";
+
+
 
     @BeforeEach
     void setUp() throws Exception {
@@ -36,10 +42,6 @@ class MarkdownReporterTest {
         writer = new PrintWriter(buffer);
     }
 
-    private static String nl() {
-        return "\n";
-    }
-
     private static String normalise(String s) {
         return s.replace("\r\n", "\n");
     }
@@ -49,10 +51,10 @@ class MarkdownReporterTest {
         reporter.writeReportHeader(config, writer);
         writer.flush();
 
-        String expected = "# Crawl Report: http://example.com" + nl() +
-                "**Max Depth:** 2  "                 + nl() +
-                "**Domains:** example.com"            + nl() + nl() +
-                "---"                                 + nl() + nl();
+        String expected = "# Crawl Report: http://example.com" + NEWLINE +
+                "**Max Depth:** 2  "                 + NEWLINE +
+                "**Domains:** example.com"            + NEWLINE + NEWLINE +
+                "---"                                 + NEWLINE + NEWLINE;
 
         assertEquals(expected, normalise(buffer.toString()));
     }
@@ -65,9 +67,9 @@ class MarkdownReporterTest {
         reporter.writePageHeader(page, writer);
         writer.flush();
 
-        String expected = "## Page: http://example.com" + nl() +
-                "**Depth:** 1  "             + nl() +
-                "**Status:** OK"             + nl() + nl();
+        String expected = "## Page: http://example.com" + NEWLINE +
+                "**Depth:** 1  "             + NEWLINE +
+                "**Status:** OK"             + NEWLINE + NEWLINE;
 
         assertEquals(expected, normalise(buffer.toString()));
     }
@@ -80,9 +82,9 @@ class MarkdownReporterTest {
         reporter.writePageHeader(page, writer);
         writer.flush();
 
-        String expected = "## Page: http://example.com" + nl() +
-                "**Depth:** 1  "             + nl() +
-                "**Status:** Broken"         + nl() + nl() + nl(); // extra blank‑line from println()
+        String expected = "## Page: http://example.com" + NEWLINE +
+                "**Depth:** 1  "             + NEWLINE +
+                "**Status:** Broken"         + NEWLINE + NEWLINE + NEWLINE; // extra blank‑line from println()
 
         assertEquals(expected, normalise(buffer.toString()));
     }
@@ -95,8 +97,8 @@ class MarkdownReporterTest {
         reporter.writePageContent(page, writer);
         writer.flush();
 
-        String expected = "### Content" + nl() + nl() +
-                "*(No headings or links found)*" + nl() + nl();
+        String expected = "### Content" + NEWLINE + NEWLINE +
+                "*(No headings or links found)*" + NEWLINE + NEWLINE;
 
         assertEquals(expected, normalise(buffer.toString()));
     }
@@ -112,9 +114,9 @@ class MarkdownReporterTest {
         writer.flush();
 
         String expected =
-                ">>**H2: Test Heading**"      + nl() +
-                        ">>* http://example.com/link1" + nl() +
-                        ">>* http://example.com/link2" + nl() + nl();
+                ">>**H2: Test Heading**"      + NEWLINE +
+                        ">>* http://example.com/link1" + NEWLINE +
+                        ">>* http://example.com/link2" + NEWLINE + NEWLINE;
 
         assertEquals(expected, normalise(buffer.toString()));
     }
@@ -132,9 +134,9 @@ class MarkdownReporterTest {
         reporter.writeLinksBeforeHeadings(page, writer);
         writer.flush();
 
-        String expected = "**Links Before First Heading:**" + nl() +
-                "* http://example.com/root1"    + nl() +
-                "* http://example.com/root2"    + nl() + nl();
+        String expected = "**Links Before First Heading:**" + NEWLINE +
+                "* http://example.com/root1"    + NEWLINE +
+                "* http://example.com/root2"    + NEWLINE + NEWLINE;
 
         assertEquals(expected, normalise(buffer.toString()));
     }
@@ -158,8 +160,8 @@ class MarkdownReporterTest {
 
         String out = normalise(buffer.toString());
 
-        // there should be exactly two page headers – one for the root and one for the child
-        long occurrences = out.lines().filter(l -> l.startsWith("## Page:")).count();
+        // there should be exactly two-page headers – one for the root and one for the child
+        long occurrences = out.lines().filter(IS_PAGE_HEADER).count();
         assertEquals(2, occurrences);
 
         assertTrue(out.contains("## Page: http://example.com"));
@@ -168,4 +170,6 @@ class MarkdownReporterTest {
         // make sure the horizontal rule (---) between pages is present
         assertTrue(out.contains("---"));
     }
+
+    private static final Predicate<String> IS_PAGE_HEADER = line -> line.startsWith("## Page:");
 }
