@@ -4,17 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #4: Made Error Handling more robust + made Document Fetching more Abstract">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ConcurrentCrawlerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ConcurrentWebCrawler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/CrawlTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/factory/CrawlerFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/crawler/reporter/EnhancedMarkdownReporter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Concurrent_8_Thread.xml" afterDir="false" />
+    <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #4: Both Produce the same Report now. Onto Optimizing">
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Sequential.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Concurrent.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/crawler/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/adapters/JsoupDocumentSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ConcurrentWebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/ConcurrentWebCrawler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/concurrent/CrawlTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/concurrent/CrawlTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/factory/CrawlerFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/factory/CrawlerFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/reporter/EnhancedMarkdownReporter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/reporter/MarkdownReporter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +71,9 @@
   <component name="KubernetesApiProvider"><![CDATA[{
   "isMigrated": true
 }]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -85,7 +88,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Concurrent 8 Thread.executor": "Run",
+    "Application.Concurrent.executor": "Run",
     "Application.Main.executor": "Run",
+    "Application.Normal.executor": "Run",
+    "Application.Sequential.executor": "Run",
     "Application.crawler.Main.executor": "Run",
     "JUnit.All in cleanCode (1).executor": "Debug",
     "JUnit.All in cleanCode.executor": "Run",
@@ -158,7 +164,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Concurrent 8 Thread">
+  <component name="RunManager" selected="Application.Concurrent">
     <configuration name="LinkFilterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
@@ -230,7 +236,8 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Concurrent 8 Thread" />
+      <item itemvalue="Application.Sequential" />
+      <item itemvalue="Application.Concurrent" />
       <item itemvalue="JUnit.WebCrawlerTest.testCrawlPageDisallowedDomain" />
       <item itemvalue="JUnit.test in cleanCode" />
       <item itemvalue="JUnit.LinkFilterTest" />
@@ -271,7 +278,7 @@
       <workItem from="1745913394250" duration="5278000" />
       <workItem from="1745953526716" duration="810000" />
       <workItem from="1746893634365" duration="10000" />
-      <workItem from="1749040406781" duration="4400000" />
+      <workItem from="1749040406781" duration="8274000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -545,7 +552,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749046045170</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Coding Together Session #4: Concurrent Crawling should work in Theory + Updated README.md">
+      <option name="closed" value="true" />
+      <created>1749047770716</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1749047770716</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -563,8 +578,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Coding Together Session #1: CrawlerConfig simplified, Heading turned into Record and merged into PageResult" />
-    <MESSAGE value="Coding Together Session #1: added Tests for CrawlerConfig and PageResult" />
     <MESSAGE value="Coding Together Session #1: CrawlerConfig change to URI instead of String, MarkdownReporter with Unit Tests + SonarLints" />
     <MESSAGE value="Coding Together Session #1: updated README.md" />
     <MESSAGE value="Coding Together Session #2: rework of main to make it cleaner" />
@@ -588,7 +601,9 @@
     <MESSAGE value="Coding Together Session #3: Assignment 1 done v2 (no bugs for now)" />
     <MESSAGE value="Coding Together Session #4: Fixed &quot;Issues&quot;" />
     <MESSAGE value="Coding Together Session #4: Made Error Handling more robust + made Document Fetching more Abstract" />
-    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #4: Made Error Handling more robust + made Document Fetching more Abstract" />
+    <MESSAGE value="Coding Together Session #4: Concurrent Crawling should work in Theory + Updated README.md" />
+    <MESSAGE value="Coding Together Session #4: Both Produce the same Report now. Onto Optimizing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coding Together Session #4: Both Produce the same Report now. Onto Optimizing" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

@@ -66,7 +66,7 @@ public class MarkdownReporter {
     }
 
     /**
-     * Writes the page header with URL, depth and status.
+     * Writes the page header with URL, depth, and status.
      */
     void writePageHeader(PageResult page, PrintWriter writer) {
         writer.printf("## Page: %s%n", page.url());

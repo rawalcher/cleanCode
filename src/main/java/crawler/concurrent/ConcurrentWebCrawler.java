@@ -1,9 +1,6 @@
 package crawler.concurrent;
 
-import crawler.adapters.HtmlDocumentSource;
-import crawler.error.DefaultErrorHandlingStrategy;
 import crawler.error.ErrorCollector;
-import crawler.error.ErrorHandlingStrategy;
 import crawler.fetcher.RobotsTxtCache;
 import crawler.model.CrawlerConfig;
 import crawler.model.PageResult;
@@ -12,51 +9,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 /**
- * Concurrent implementation of web crawler using ThreadPoolExecutor.
- * Manages parallel crawling of web pages while maintaining the original structure.
- *
- * Key features:
- * - Thread-safe crawling with configurable thread pool
- * - Error collection and handling
- * - Result consolidation maintaining hierarchical structure
- * - Clean shutdown and resource management
+ * Concurrent implementation of web crawler that maintains the same hierarchical structure
+ * as the sequential crawler. Each page's links become direct children of that page,
+ * preserving the depth-first tree structure while using parallel processing.
  */
 public class ConcurrentWebCrawler {
     private static final Logger logger = LoggerFactory.getLogger(ConcurrentWebCrawler.class);
 
-    private final HtmlDocumentSource documentSource;
     private final RobotsTxtCache robotsCache;
     private final MarkdownReporter reporter;
-    private final ErrorHandlingStrategy errorStrategy;
     private final int maxThreads;
     private final long timeoutSeconds;
 
-    public ConcurrentWebCrawler(HtmlDocumentSource documentSource,
-                                RobotsTxtCache robotsCache,
-                                MarkdownReporter reporter) {
-        this(documentSource, robotsCache, reporter,
-                Runtime.getRuntime().availableProcessors() * 2,
-                300,
-                new DefaultErrorHandlingStrategy());
-    }
-
-    public ConcurrentWebCrawler(HtmlDocumentSource documentSource,
-                                RobotsTxtCache robotsCache,
+    public ConcurrentWebCrawler(RobotsTxtCache robotsCache,
                                 MarkdownReporter reporter,
                                 int maxThreads,
-                                long timeoutSeconds,
-                                ErrorHandlingStrategy errorStrategy) {
-        this.documentSource = documentSource;
+                                long timeoutSeconds) {
         this.robotsCache = robotsCache;
         this.reporter = reporter;
         this.maxThreads = maxThreads;
         this.timeoutSeconds = timeoutSeconds;
-        this.errorStrategy = errorStrategy;
     }
 
     public void crawl(CrawlerConfig config) {
@@ -73,7 +51,8 @@ public class ConcurrentWebCrawler {
         ErrorCollector errorCollector = new ErrorCollector();
 
         try (ThreadPoolExecutor executor = createThreadPool()) {
-            PageResult rootResult = performConcurrentCrawl(config, executor, linkFilter, errorCollector);
+            PageResult rootResult = crawlPageConcurrently(config.getRootUrl(), 0, config,
+                    executor, linkFilter, errorCollector);
 
             long endTime = System.currentTimeMillis();
             logger.info("Crawl completed in {} ms. Visited {} URLs, {} errors",
@@ -88,11 +67,11 @@ public class ConcurrentWebCrawler {
 
     private ThreadPoolExecutor createThreadPool() {
         return new ThreadPoolExecutor(
-                Math.min(maxThreads, 4), // Core pool size
-                maxThreads,              // Maximum pool size
-                60L,                     // Keep alive time
-                TimeUnit.SECONDS,        // Time unit
-                new LinkedBlockingQueue<>(), // Work queue
+                Math.min(maxThreads, 4),
+                maxThreads,
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(),
                 r -> {
                     Thread t = new Thread(r, "CrawlerThread");
                     t.setDaemon(true);
@@ -101,105 +80,89 @@ public class ConcurrentWebCrawler {
         );
     }
 
-    private PageResult performConcurrentCrawl(CrawlerConfig config,
-                                              ThreadPoolExecutor executor,
-                                              ThreadSafeLinkFilter linkFilter,
-                                              ErrorCollector errorCollector) throws InterruptedException {
+    /**
+     * Entry point - crawls the root URL exactly like the sequential crawler.
+     */
+    private PageResult crawlPageConcurrently(URI url, int depth, CrawlerConfig config,
+                                             ThreadPoolExecutor executor,
+                                             ThreadSafeLinkFilter linkFilter,
+                                             ErrorCollector errorCollector) {
 
-        Map<URI, Future<PageResult>> futures = new ConcurrentHashMap<>();
-        Queue<CrawlLevel> levelsToProcess = new LinkedList<>();
+        logger.debug("Crawling {} at depth {}", url, depth);
 
-        levelsToProcess.offer(new CrawlLevel(0, List.of(config.getRootUrl())));
+        // Check robots.txt first (like sequential crawler)
+        if (!robotsCache.getHandler(url).isAllowed(url)) {
+            logger.debug("Blocked by robots.txt: {}", url);
+            return PageResult.brokenLink(url, depth);
+        }
 
-        PageResult rootResult = null;
-        Map<URI, PageResult> allResults = new ConcurrentHashMap<>();
+        CrawlTask task = new CrawlTask(url, depth, robotsCache, errorCollector);
 
-        while (!levelsToProcess.isEmpty() && !executor.isShutdown()) {
-            CrawlLevel currentLevel = levelsToProcess.poll();
+        PageResult pageResult;
+        try {
+            pageResult = task.call();
+        } catch (Exception e) {
+            logger.warn("Failed to crawl {}: {}", url, e.getMessage());
+            return PageResult.brokenLink(url, depth);
+        }
 
-            if (currentLevel.depth() > config.getMaxDepth()) {
-                break;
-            }
+        if (pageResult.broken()) {
+            return pageResult;
+        }
 
-            logger.debug("Processing depth level {} with {} URLs",
-                    currentLevel.depth(), currentLevel.urls().size());
+        List<URI> links = pageResult.getAllLinks();
+        Set<PageResult> children = crawlChildrenConcurrently(links, depth + 1, config,
+                executor, linkFilter, errorCollector);
 
-            for (URI url : currentLevel.urls()) {
-                CrawlTask task = new CrawlTask(url, currentLevel.depth(), config,
-                        documentSource, robotsCache, linkFilter, errorCollector);
-                Future<PageResult> future = executor.submit(task);
-                futures.put(url, future);
-            }
+        return pageResult.withChildren(children);
+    }
 
-            List<URI> nextLevelUrls = new ArrayList<>();
+    /**
+     * Crawls child links concurrently while maintaining the hierarchical structure.
+     * Uses the same logic as the sequential crawler's processChildLinks method.
+     */
+    private Set<PageResult> crawlChildrenConcurrently(List<URI> links, int childDepth,
+                                                      CrawlerConfig config,
+                                                      ThreadPoolExecutor executor,
+                                                      ThreadSafeLinkFilter linkFilter,
+                                                      ErrorCollector errorCollector) {
 
-            for (Map.Entry<URI, Future<PageResult>> entry : futures.entrySet()) {
-                URI url = entry.getKey();
-                Future<PageResult> future = entry.getValue();
+        if (links == null || links.isEmpty()) {
+            return Set.of();
+        }
+
+        Set<PageResult> children = new HashSet<>();
+
+        for (URI link : links) {
+            if (isLinkEligibleForCrawling(link, childDepth - 1, config, linkFilter)) {
+                Future<PageResult> future = executor.submit(() ->
+                        crawlPageConcurrently(link, childDepth, config, executor, linkFilter, errorCollector)
+                );
 
                 try {
-                    PageResult result = future.get(timeoutSeconds, TimeUnit.SECONDS);
-                    allResults.put(url, result);
-
-                    if (url.equals(config.getRootUrl())) {
-                        rootResult = result;
+                    PageResult child = future.get(timeoutSeconds, TimeUnit.SECONDS);
+                    if (child != null) {
+                        children.add(child);
                     }
-
-                    if (currentLevel.depth() < config.getMaxDepth() && !result.broken()) {
-                        nextLevelUrls.addAll(result.getAllLinks());
-                    }
-
                 } catch (TimeoutException e) {
-                    logger.warn("Timeout waiting for result from {}", url);
+                    logger.warn("Timeout waiting for child result at depth {}", childDepth);
                     future.cancel(true);
-                    errorCollector.addError(
-                            crawler.error.CrawlError.create(url, currentLevel.depth(),
-                                    crawler.error.CrawlError.ErrorType.TIMEOUT, "Task execution timeout"));
-                } catch (ExecutionException e) {
-                    logger.warn("Error executing crawl task for {}: {}", url, e.getCause().getMessage());
-                }
-            }
-
-            futures.clear();
-
-            if (!nextLevelUrls.isEmpty() && currentLevel.depth() < config.getMaxDepth()) {
-                List<URI> filteredUrls = nextLevelUrls.stream()
-                        .filter(uri -> !linkFilter.markVisited(uri))
-                        .filter(uri -> linkFilter.isAllowedDomain(uri, config.getAllowedDomains()))
-                        .collect(Collectors.toList());
-
-                if (!filteredUrls.isEmpty()) {
-                    levelsToProcess.offer(new CrawlLevel(currentLevel.depth() + 1, filteredUrls));
+                } catch (InterruptedException | ExecutionException e) {
+                    logger.warn("Error getting child result at depth {}: {}", childDepth, e.getMessage());
                 }
             }
         }
 
-        return buildHierarchicalResult(rootResult, allResults);
+        return children;
     }
 
-    private PageResult buildHierarchicalResult(PageResult root, Map<URI, PageResult> allResults) {
-        if (root == null) {
-            logger.warn("No root result found");
-            return null;
-        }
-
-        return buildResultTree(root, allResults, new HashSet<>());
-    }
-
-    private PageResult buildResultTree(PageResult current, Map<URI, PageResult> allResults, Set<URI> visited) {
-        if (visited.contains(current.url())) {
-            return current;
-        }
-        visited.add(current.url());
-
-        Set<PageResult> children = current.getAllLinks().stream()
-                .map(allResults::get)
-                .filter(Objects::nonNull)
-                .filter(child -> !visited.contains(child.url()))
-                .map(child -> buildResultTree(child, allResults, visited))
-                .collect(Collectors.toSet());
-
-        return current.withChildren(children);
+    /**
+     * Exactly mirrors the sequential crawler's isLinkEligibleForCrawling logic.
+     */
+    private boolean isLinkEligibleForCrawling(URI link, int depth, CrawlerConfig config, ThreadSafeLinkFilter linkFilter) {
+        return !linkFilter.markVisited(link) &&
+                linkFilter.isAllowedDomain(link, config.getAllowedDomains()) &&
+                depth + 1 <= config.getMaxDepth();
     }
 
     private void generateReport(PageResult rootResult, CrawlerConfig config, ErrorCollector errorCollector) {
@@ -215,9 +178,4 @@ public class ConcurrentWebCrawler {
             logger.warn("No crawl results generated - check configuration and connectivity");
         }
     }
-
-    private record CrawlLevel(int depth, List<URI> urls) {}
-
-    public int getMaxThreads() { return maxThreads; }
-    public long getTimeoutSeconds() { return timeoutSeconds; }
 }

@@ -1,9 +1,7 @@
 package crawler;
 
-import crawler.adapters.JsoupDocumentSource;
 import crawler.app.WebCrawler;
 import crawler.concurrent.ConcurrentWebCrawler;
-import crawler.error.DefaultErrorHandlingStrategy;
 import crawler.fetcher.RobotsTxtCache;
 import crawler.model.CrawlerConfig;
 import crawler.reporter.MarkdownReporter;
@@ -114,18 +112,14 @@ public class Main {
     }
 
     private static ConcurrentWebCrawler createConcurrentWebCrawler(int threadCount) {
-        JsoupDocumentSource documentSource = new JsoupDocumentSource();
         RobotsTxtCache robotsCache = new RobotsTxtCache(USER_AGENT);
         MarkdownReporter reporter = new MarkdownReporter();
-        DefaultErrorHandlingStrategy errorStrategy = new DefaultErrorHandlingStrategy();
 
         return new ConcurrentWebCrawler(
-                documentSource,
                 robotsCache,
                 reporter,
                 threadCount,
-                300, // 5-minute timeout
-                errorStrategy
+                300 // 5-minute timeout
         );
     }
 }
