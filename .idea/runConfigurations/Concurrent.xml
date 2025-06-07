@@ -2,7 +2,7 @@
   <configuration default="false" name="Concurrent" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="crawler.Main" />
     <module name="cleanCode" />
-    <option name="PROGRAM_PARAMETERS" value="--concurrent https://example.com 3 example.com,iana.org" />
+    <option name="PROGRAM_PARAMETERS" value="--concurrent https://example.com 2 example.com,iana.org" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="crawler.model.*" />

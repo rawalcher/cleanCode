@@ -2,7 +2,7 @@
   <configuration default="false" name="Sequential" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="crawler.Main" />
     <module name="cleanCode" />
-    <option name="PROGRAM_PARAMETERS" value="https://example.com 3 example.com,iana.org" />
+    <option name="PROGRAM_PARAMETERS" value="https://example.com 2 example.com,iana.org" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

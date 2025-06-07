@@ -5,20 +5,9 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-/**
- * Thread-safe link filter that validates domains and tracks visited URLs.
- * Uses concurrent data structures to ensure thread safety without blocking.
- */
 public class LinkFilter {
     private final ConcurrentMap<URI, Boolean> visited = new ConcurrentHashMap<>();
 
-    /**
-     * Checks if a URL's domain is allowed.
-     *
-     * @param url the URL to check
-     * @param allowedDomains list of allowed domains
-     * @return true if the domain is allowed, false otherwise
-     */
     public boolean isAllowedDomain(URI url, List<String> allowedDomains) {
         if (url == null || allowedDomains == null || allowedDomains.isEmpty()) {
             return false;
@@ -30,15 +19,7 @@ public class LinkFilter {
         return allowedDomains.stream().anyMatch(host::endsWith);
     }
 
-    /**
-     * Checks if the URL has been visited before.
-     * If not visited, mark it as visited and return false.
-     * This method is thread-safe and atomic.
-     *
-     * @param url URI to check
-     * @return true if already visited, false if this is a new URL
-     */
-    public synchronized boolean isVisited(URI url) {
+    public boolean isVisited(URI url) {
         if (url == null) return true;
 
         URI normalizedUrl = normalizeUri(url);
@@ -52,24 +33,18 @@ public class LinkFilter {
      * @return true if the URL was already visited, false if this is the first visit
      */
     public boolean markVisited(URI url) {
-        if (url == null) return true;
+        if (url == null) return false;
 
         URI normalizedUrl = normalizeUri(url);
-        return visited.putIfAbsent(normalizedUrl, Boolean.TRUE) != null;
+        // putIfAbsent returns null if the key was not present (first visit)
+        // returns the existing value if the key was already present (already visited)
+        return visited.putIfAbsent(normalizedUrl, Boolean.TRUE) == null;
     }
 
-    /**
-     * Gets the count of visited URLs.
-     *
-     * @return number of unique URLs visited
-     */
     public int getVisitedCount() {
         return visited.size();
     }
 
-    /**
-     * Clears the visited set. Useful for testing or resetting crawl state.
-     */
     public void clearVisited() {
         visited.clear();
     }

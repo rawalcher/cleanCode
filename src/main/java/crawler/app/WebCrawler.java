@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,9 +89,6 @@ public class WebCrawler {
         }
     }
 
-    /**
-     * Sequential crawling implementation (original logic).
-     */
     private void crawlSequential(CrawlerConfig config, long startTime) {
         PageResult rootResult = crawlPageSequential(config.getRootUrl(), 0, config);
 
@@ -123,7 +121,6 @@ public class WebCrawler {
             throws PageFetcher.FetchException {
 
         Document document = fetcher.fetch(url);
-        linkFilter.markVisited(url);
         PageResult page = parser.parse(url, depth, document);
         Set<PageResult> children = processChildLinksSequential(page.getAllLinks(), depth, config);
 
@@ -138,20 +135,18 @@ public class WebCrawler {
         }
 
         for (URI link : links) {
-            if (isLinkEligibleForCrawling(link, depth, config)) {
-                PageResult child = crawlPageSequential(link, depth + 1, config);
-                if (child != null) {
-                    children.add(child);
+            if (isLinkEligibleForCrawling(link, depth, config) && linkFilter.markVisited(link)) {
+                    PageResult child = crawlPageSequential(link, depth + 1, config);
+                    if (child != null) {
+                        children.add(child);
+                    }
                 }
-            }
+
         }
 
         return children;
     }
 
-    /**
-     * Concurrent crawling implementation.
-     */
     private void crawlConcurrent(CrawlerConfig config, long startTime) {
         ErrorCollector errorCollector = new ErrorCollector();
 
@@ -207,29 +202,35 @@ public class WebCrawler {
         }
 
         Set<PageResult> children = new HashSet<>();
+        List<Future<PageResult>> futures = new ArrayList<>();
 
         for (URI link : links) {
-            if (isLinkEligibleForCrawling(link, childDepth - 1, config)) {
-                Future<PageResult> future = executor.submit(() ->
-                        crawlPageConcurrent(link, childDepth, config, executor, errorCollector)
-                );
-
-                try {
-                    PageResult child = future.get(timeoutSeconds, TimeUnit.SECONDS);
-                    if (child != null) {
-                        children.add(child);
-                    }
-                } catch (TimeoutException e) {
-                    logger.warn("Timeout waiting for child result at depth {}", childDepth);
-                    future.cancel(true);
-                } catch (InterruptedException | ExecutionException e) {
-                    logger.warn("Error getting child result at depth {}: {}", childDepth, e.getMessage());
+            if (isLinkEligibleForCrawling(link, childDepth - 1, config) && linkFilter.markVisited(link)) {
+                    Future<PageResult> future = executor.submit(() ->
+                            crawlPageConcurrent(link, childDepth, config, executor, errorCollector)
+                    );
+                    futures.add(future);
                 }
+
+        }
+
+        for (Future<PageResult> future : futures) {
+            try {
+                PageResult child = future.get(timeoutSeconds, TimeUnit.SECONDS);
+                if (child != null) {
+                    children.add(child);
+                }
+            } catch (TimeoutException e) {
+                logger.warn("Timeout waiting for child result at depth {}", childDepth);
+                future.cancel(true);
+            } catch (InterruptedException | ExecutionException e) {
+                logger.warn("Error getting child result at depth {}: {}", childDepth, e.getMessage());
             }
         }
 
         return children;
     }
+
 
     private boolean isAllowedByRobots(URI url) {
         boolean allowed = robotsCache.getHandler(url).isAllowed(url);
@@ -240,8 +241,7 @@ public class WebCrawler {
     }
 
     private boolean isLinkEligibleForCrawling(URI link, int depth, CrawlerConfig config) {
-        return !linkFilter.isVisited(link) &&
-                linkFilter.isAllowedDomain(link, config.getAllowedDomains()) &&
+        return linkFilter.isAllowedDomain(link, config.getAllowedDomains()) &&
                 depth + 1 <= config.getMaxDepth();
     }
 
