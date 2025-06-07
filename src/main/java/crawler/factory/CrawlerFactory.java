@@ -8,10 +8,7 @@ import crawler.reporter.MarkdownReporter;
 import crawler.util.LinkFilter;
 
 /**
- * Factory class for creating different types of web crawlers.
- * Encapsulates the creation logic and dependency injection for crawler components.
- * This factory supports the Dependency Inversion Principle by allowing
- * different implementations to be injected while maintaining clean interfaces.
+ * Factory for creating web crawlers with configurable concurrency.
  */
 public class CrawlerFactory {
 
@@ -19,13 +16,35 @@ public class CrawlerFactory {
         // Utility class - prevent instantiation
     }
 
-    public static WebCrawler getWebCrawler(String userAgent) {
+    /**
+     * Creates a sequential web crawler (1 thread).
+     */
+    public static WebCrawler createSequentialCrawler(String userAgent) {
+        return createCrawler(userAgent, 1, 30);
+    }
+
+    /**
+     * Creates a concurrent web crawler.
+     */
+    public static WebCrawler createConcurrentCrawler(String userAgent, int threadCount, long timeoutSeconds) {
+        return createCrawler(userAgent, threadCount, timeoutSeconds);
+    }
+
+    /**
+     * Creates a web crawler with specified parameters.
+     */
+    public static WebCrawler createCrawler(String userAgent, int threadCount, long timeoutSeconds) {
         PageFetcher fetcher = new PageFetcher();
         HtmlParser parser = new HtmlParser();
         RobotsTxtCache robotsCache = new RobotsTxtCache(userAgent);
         LinkFilter linkFilter = new LinkFilter();
         MarkdownReporter reporter = new MarkdownReporter();
 
-        return new WebCrawler(fetcher, parser, robotsCache, linkFilter, reporter);
+        return new WebCrawler(fetcher, parser, robotsCache, linkFilter, reporter,
+                threadCount, timeoutSeconds);
+    }
+
+    public static WebCrawler getWebCrawler(String userAgent) {
+        return createSequentialCrawler(userAgent);
     }
 }

@@ -8,5 +8,5 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
-    <root level="ALL"/>
+    <root level="info"/>
 </configuration>
