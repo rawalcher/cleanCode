@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 
+import static crawler.constants.CrawlerConstants.MIN_THREADS;
+import static crawler.constants.CrawlerConstants.THREAD_KEEP_ALIVE_TIME;
+
 /**
  * Unified web crawler that supports both sequential and concurrent crawling.
  * When threadCount = 1, it behaves like a sequential crawler.
@@ -38,12 +41,12 @@ public class WebCrawler {
     /**
      * Creates a WebCrawler with configurable concurrency.
      *
-     * @param fetcher Component for fetching web pages
-     * @param parser Component for parsing HTML content
-     * @param robotsCache Component for checking robots.txt rules
-     * @param linkFilter Component for filtering links
-     * @param reporter Component for generating reports
-     * @param threadCount Number of threads to use (1 = sequential, >1 = concurrent)
+     * @param fetcher        Component for fetching web pages
+     * @param parser         Component for parsing HTML content
+     * @param robotsCache    Component for checking robots.txt rules
+     * @param linkFilter     Component for filtering links
+     * @param reporter       Component for generating reports
+     * @param threadCount    Number of threads to use (1 = sequential, >1 = concurrent)
      * @param timeoutSeconds Timeout for individual page fetches
      */
     public WebCrawler(PageFetcher fetcher, HtmlParser parser, RobotsTxtCache robotsCache,
@@ -136,11 +139,11 @@ public class WebCrawler {
 
         for (URI link : links) {
             if (isLinkEligibleForCrawling(link, depth, config) && linkFilter.markVisited(link)) {
-                    PageResult child = crawlPageSequential(link, depth + 1, config);
-                    if (child != null) {
-                        children.add(child);
-                    }
+                PageResult child = crawlPageSequential(link, depth + 1, config);
+                if (child != null) {
+                    children.add(child);
                 }
+            }
 
         }
 
@@ -201,18 +204,29 @@ public class WebCrawler {
             return Set.of();
         }
 
-        Set<PageResult> children = new HashSet<>();
+        List<Future<PageResult>> futures = submitCrawlTasks(links, childDepth, config, executor, errorCollector);
+        return collectResults(futures, childDepth);
+    }
+
+    private List<Future<PageResult>> submitCrawlTasks(List<URI> links, int childDepth,
+                                                      CrawlerConfig config, ThreadPoolExecutor executor,
+                                                      ErrorCollector errorCollector) {
         List<Future<PageResult>> futures = new ArrayList<>();
 
         for (URI link : links) {
             if (isLinkEligibleForCrawling(link, childDepth - 1, config) && linkFilter.markVisited(link)) {
-                    Future<PageResult> future = executor.submit(() ->
-                            crawlPageConcurrent(link, childDepth, config, executor, errorCollector)
-                    );
-                    futures.add(future);
-                }
-
+                Future<PageResult> future = executor.submit(() ->
+                        crawlPageConcurrent(link, childDepth, config, executor, errorCollector)
+                );
+                futures.add(future);
+            }
         }
+
+        return futures;
+    }
+
+    private Set<PageResult> collectResults(List<Future<PageResult>> futures, int childDepth) {
+        Set<PageResult> children = new HashSet<>();
 
         for (Future<PageResult> future : futures) {
             try {
@@ -223,14 +237,27 @@ public class WebCrawler {
             } catch (TimeoutException e) {
                 logger.warn("Timeout waiting for child result at depth {}", childDepth);
                 future.cancel(true);
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
+                logger.warn("Thread interrupted while waiting for child result at depth {}", childDepth);
+                Thread.currentThread().interrupt();
+                cancelRemainingFutures(futures, future);
+                return children; // Return partial results
+            } catch (ExecutionException e) {
                 logger.warn("Error getting child result at depth {}: {}", childDepth, e.getMessage());
+                if (e.getCause() != null) {
+                    logger.debug("Execution error cause: {}", e.getCause().getMessage());
+                }
             }
         }
 
         return children;
     }
 
+    private void cancelRemainingFutures(List<Future<PageResult>> futures, Future<PageResult> excludeFuture) {
+        futures.stream()
+                .filter(f -> f != excludeFuture && !f.isDone())
+                .forEach(f -> f.cancel(true));
+    }
 
     private boolean isAllowedByRobots(URI url) {
         boolean allowed = robotsCache.getHandler(url).isAllowed(url);
@@ -247,9 +274,9 @@ public class WebCrawler {
 
     private ThreadPoolExecutor createThreadPool() {
         return new ThreadPoolExecutor(
-                Math.min(threadCount, 4),
+                Math.min(threadCount, MIN_THREADS),
                 threadCount,
-                60L,
+                THREAD_KEEP_ALIVE_TIME,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(),
                 r -> {
@@ -275,6 +302,11 @@ public class WebCrawler {
     }
 
     // Getters for testing
-    public int getThreadCount() { return threadCount; }
-    public long getTimeoutSeconds() { return timeoutSeconds; }
+    public int getThreadCount() {
+        return threadCount;
+    }
+
+    public long getTimeoutSeconds() {
+        return timeoutSeconds;
+    }
 }
