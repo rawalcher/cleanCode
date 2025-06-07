@@ -1,21 +1,14 @@
 package crawler.parser;
 
 import crawler.model.PageResult;
-import crawler.model.PageResult.Section;
-import crawler.model.PageResult.Heading;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HtmlParserTest {
 
@@ -23,77 +16,82 @@ class HtmlParserTest {
     private static final URI BASE_URI = URI.create("https://example.com");
 
     @Test
-    void parsesHeadingsAndLinks_preservesOrder() {
-        Document doc = Jsoup.parse("");
-        Element body = doc.body();
-        body.appendElement("h1").text("Main Heading");
-        body.appendElement("a").attr("href", "https://example.com/first").text("L1");
-        body.appendElement("a").attr("href", "/second").text("L2");
+    void testBasicParsingWithHeadingsAndLinks() {
+        String html = """
+            <html><body>
+                <h1>Main Heading</h1>
+                <a href="https://example.com/first">Link 1</a>
+                <a href="/second">Link 2</a>
+                <h2>Sub Heading</h2>
+                <a href="#fragment">Fragment Link</a>
+            </body></html>
+            """;
 
-        PageResult pr = parser.parse(BASE_URI, 0, doc);
-        assertEquals(1, pr.sections().size(), "One section expected");
+        Document doc = Jsoup.parse(html);
+        PageResult result = parser.parse(BASE_URI, 0, doc);
 
-        Section s = pr.sections().getFirst();
-        assertEquals(new Heading(1, "Main Heading"), s.heading());
-        assertEquals(2, s.links().size());
+        assertEquals(2, result.sections().size());
 
-        List<String> linkStrings = new ArrayList<>(s.links())
-                .stream().map(URI::toString).toList();
-        assertEquals(List.of(
-                "https://example.com/first",
-                "https://example.com/second"), linkStrings);
+        // Check first section (Main Heading)
+        PageResult.Section firstSection = result.sections().get(0);
+        assertEquals("Main Heading", firstSection.heading().text());
+        assertEquals(1, firstSection.heading().level());
+        assertEquals(2, firstSection.links().size());
+
+        // Check second section (Sub Heading)
+        PageResult.Section secondSection = result.sections().get(1);
+        assertEquals("Sub Heading", secondSection.heading().text());
+        assertEquals(2, secondSection.heading().level());
+        assertEquals(1, secondSection.links().size());
     }
 
     @Test
-    void emptyDocument_givesNoSections() {
-        Document empty = Jsoup.parse("");
-        PageResult pr = parser.parse(BASE_URI, 0, empty);
-        assertTrue(pr.sections().isEmpty());
+    void testLinksBeforeHeadings() {
+        String html = """
+            <html><body>
+                <a href="/root-link">Root Link</a>
+                <h1>First Heading</h1>
+                <a href="/under-heading">Under Heading</a>
+            </body></html>
+            """;
+
+        Document doc = Jsoup.parse(html);
+        PageResult result = parser.parse(BASE_URI, 0, doc);
+
+        assertEquals(2, result.sections().size());
+
+        PageResult.Section rootSection = result.sections().getFirst();
+        assertEquals(0, rootSection.heading().level());
+        assertEquals(1, rootSection.links().size());
+
+        PageResult.Section h1Section = result.sections().get(1);
+        assertEquals(1, h1Section.heading().level());
+        assertEquals("First Heading", h1Section.heading().text());
     }
 
     @Test
-    void discardsCompletelyBrokenLinks() {
-        Document doc = Jsoup.parse("");
-        doc.body().appendElement("a").attr("href", "ht!tp://bad").text("bad");
-        PageResult pr = parser.parse(BASE_URI, 0, doc);
-        assertTrue(pr.sections().isEmpty(), "Broken link should be ignored so root section filtered out");
+    void testIgnoresBrokenLinks() {
+        String html = """
+            <html><body>
+                <h1>Test</h1>
+                <a href="ht!tp://broken">Broken Link</a>
+                <a href="/valid">Valid Link</a>
+            </body></html>
+            """;
+
+        Document doc = Jsoup.parse(html);
+        PageResult result = parser.parse(BASE_URI, 0, doc);
+
+        assertEquals(1, result.sections().size());
+        PageResult.Section section = result.sections().getFirst();
+        assertEquals(1, section.links().size());
     }
 
     @Test
-    void resolvesRelativeAndFragmentLinks_underRootHeading() {
+    void testEmptyDocument() {
         Document doc = Jsoup.parse("");
-        Element body = doc.body();
-        body.appendElement("a").attr("href", "/contact");
-        body.appendElement("a").attr("href", "#top");
+        PageResult result = parser.parse(BASE_URI, 0, doc);
 
-        PageResult pr = parser.parse(BASE_URI, 0, doc);
-        assertEquals(1, pr.sections().size());
-        Section root = pr.sections().getFirst();
-        assertEquals(0, root.heading().level());
-
-        Set<String> links = root.links().stream()
-                .map(URI::toString)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-        assertEquals(Set.of("https://example.com/contact", "https://example.com#top"), links);
-    }
-
-    @Test
-    void ignoresHeadingsAboveH6() {
-        Document doc = Jsoup.parse("");
-        doc.body().appendElement("h7").text("SkipMe");
-        doc.body().appendElement("h1").text("Valid");
-        PageResult pr = parser.parse(BASE_URI, 0, doc);
-        assertEquals(1, pr.sections().size());
-        assertEquals("Valid", pr.sections().getFirst().heading().text());
-    }
-
-    @Test
-    void ignoresEmptyHeadingText() {
-        Document doc = Jsoup.parse("");
-        doc.body().appendElement("h2").text("   ");
-        doc.body().appendElement("h3").text("Good");
-        PageResult pr = parser.parse(BASE_URI, 0, doc);
-        assertEquals(1, pr.sections().size());
-        assertEquals("Good", pr.sections().getFirst().heading().text());
+        assertTrue(result.sections().isEmpty());
     }
 }

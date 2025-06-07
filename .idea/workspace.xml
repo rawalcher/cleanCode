@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3cc9749-718c-48ea-aa08-c51500d62e88" name="Changes" comment="Coding Together Session #5: Both now PROPERLY work.">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Concurrent.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Concurrent.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Sequential.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Sequential.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/crawler/error/ErrorCollectorTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/app/WebCrawler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/crawler/util/LinkFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/crawler/util/LinkFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/app/WebCrawlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/fetcher/RobotsTxtHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/fetcher/RobotsTxtHandlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/parser/HtmlParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/parser/HtmlParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/crawler/util/LinkFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/crawler/util/LinkFilterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +160,7 @@
       <recent name="crawler.reporter" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Concurrent">
+  <component name="RunManager" selected="JUnit.test in cleanCode">
     <configuration name="LinkFilterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="cleanCode" />
       <extension name="coverage">
@@ -275,6 +276,7 @@
       <workItem from="1746893634365" duration="10000" />
       <workItem from="1749040406781" duration="8522000" />
       <workItem from="1749297754877" duration="5110000" />
+      <workItem from="1749308861507" duration="650000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
