@@ -123,6 +123,7 @@ public class WebCrawler {
             throws PageFetcher.FetchException {
 
         Document document = fetcher.fetch(url);
+        linkFilter.markVisited(url);
         PageResult page = parser.parse(url, depth, document);
         Set<PageResult> children = processChildLinksSequential(page.getAllLinks(), depth, config);
 

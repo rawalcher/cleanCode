@@ -42,7 +42,7 @@ public class LinkFilter {
         if (url == null) return true;
 
         URI normalizedUrl = normalizeUri(url);
-        return visited.computeIfAbsent(normalizedUrl, k -> true);
+        return visited.containsKey(normalizedUrl);
     }
 
     /**
